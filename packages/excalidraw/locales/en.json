@@ -81,7 +81,7 @@
     "colorPicker": "Color picker",
     "canvasColors": "Used on canvas",
     "canvasBackground": "Canvas background",
-    "drawingCanvas": "Drawing canvas",
+    "interactiveCanvas": "Interactive canvas",
     "clearCanvas": "Clear canvas",
     "layers": "Layers",
     "actions": "Actions",
@@ -301,7 +301,7 @@
     "hand": "Hand (panning tool)",
     "extraTools": "More tools",
     "mermaidToExcalidraw": "Mermaid to Excalidraw",
-    "richText": "Rich text"
+    "richContent": "Rich Content"
   },
   "element": {
     "rectangle": "Rectangle",
@@ -311,7 +311,7 @@
     "line": "Line",
     "freedraw": "Freedraw",
     "text": "Text",
-    "richtext": "Rich Text",
+    "richcontent": "Rich Content",
     "image": "Image",
     "group": "Group",
     "frame": "Frame",

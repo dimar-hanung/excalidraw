@@ -120,7 +120,8 @@ export type ExcalidrawIframeElement = _ExcalidrawElementBase &
 
 export type ExcalidrawIframeLikeElement =
   | ExcalidrawIframeElement
-  | ExcalidrawEmbeddableElement;
+  | ExcalidrawEmbeddableElement
+  | ExcalidrawRichContentElement;
 
 export type IframeData =
   | {
@@ -190,7 +191,7 @@ export type ExcalidrawRectanguloidElement =
   | ExcalidrawRectangleElement
   | ExcalidrawImageElement
   | ExcalidrawTextElement
-  | ExcalidrawRichTextElement
+  | ExcalidrawRichContentElement
   | ExcalidrawFreeDrawElement
   | ExcalidrawIframeLikeElement
   | ExcalidrawFrameLikeElement
@@ -204,7 +205,7 @@ export type ExcalidrawRectanguloidElement =
 export type ExcalidrawElement =
   | ExcalidrawGenericElement
   | ExcalidrawTextElement
-  | ExcalidrawRichTextElement
+  | ExcalidrawRichContentElement
   | ExcalidrawLinearElement
   | ExcalidrawArrowElement
   | ExcalidrawFreeDrawElement
@@ -260,7 +261,7 @@ export type ExcalidrawBindableElement =
   | ExcalidrawDiamondElement
   | ExcalidrawEllipseElement
   | ExcalidrawTextElement
-  | ExcalidrawRichTextElement
+  | ExcalidrawRichContentElement
   | ExcalidrawImageElement
   | ExcalidrawIframeElement
   | ExcalidrawEmbeddableElement
@@ -391,26 +392,7 @@ export type ElementsMapOrArray =
   | readonly ExcalidrawElement[]
   | Readonly<ElementsMap>;
 
-export type ExcalidrawRichTextElement = _ExcalidrawElementBase &
+export type ExcalidrawRichContentElement = _ExcalidrawElementBase &
   Readonly<{
-    type: "richtext";
-    fontSize: number;
-    fontFamily: FontFamilyValues;
-    text: string;
-    textAlign: TextAlign;
-    verticalAlign: VerticalAlign;
-    containerId: ExcalidrawGenericElement["id"] | null;
-    originalText: string;
-    /**
-     * If `true` the width will fit the text. If `false`, the text will
-     * wrap to fit the width.
-     *
-     * @default true
-     */
-    autoResize: boolean;
-    /**
-     * Unitless line height (aligned to W3C). To get line height in px, multiply
-     *  with font size (using `getLineHeightInPx` helper).
-     */
-    lineHeight: number & { _brand: "unitlessLineHeight" };
+    type: "richcontent";
   }>;

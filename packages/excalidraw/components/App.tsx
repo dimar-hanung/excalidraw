@@ -145,6 +145,7 @@ import {
   newMagicFrameElement,
   newIframeElement,
   newArrowElement,
+  newRichContentElement,
 } from "../element/newElement";
 import {
   hasBoundTextElement,
@@ -6490,10 +6491,7 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    if (
-      this.state.activeTool.type === "text" ||
-      this.state.activeTool.type === "richtext"
-    ) {
+    if (this.state.activeTool.type === "text") {
       this.handleTextOnPointerDown(event, pointerDownState);
     } else if (
       this.state.activeTool.type === "arrow" ||
@@ -7734,7 +7732,8 @@ class App extends React.Component<AppProps, AppState> {
       | "diamond"
       | "ellipse"
       | "iframe"
-      | "embeddable",
+      | "embeddable"
+      | "richcontent",
   ) {
     return this.state.currentItemRoundness === "round"
       ? {
@@ -7746,7 +7745,10 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   private createGenericElementOnPointerDown = (
-    elementType: ExcalidrawGenericElement["type"] | "embeddable",
+    elementType:
+      | ExcalidrawGenericElement["type"]
+      | "embeddable"
+      | "richcontent",
     pointerDownState: PointerDownState,
   ): void => {
     const [gridX, gridY] = getGridPoint(
@@ -7781,6 +7783,11 @@ class App extends React.Component<AppProps, AppState> {
     if (elementType === "embeddable") {
       element = newEmbeddableElement({
         type: "embeddable",
+        ...baseElementAttributes,
+      });
+    } else if (elementType === "richcontent") {
+      element = newRichContentElement({
+        type: "richcontent",
         ...baseElementAttributes,
       });
     } else {

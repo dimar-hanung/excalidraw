@@ -71,7 +71,7 @@
     "colorPicker": "色選択",
     "canvasColors": "キャンバス上で使用",
     "canvasBackground": "キャンバスの背景",
-    "drawingCanvas": "キャンバスの描画",
+    "interactiveCanvas": "キャンバスの描画",
     "layers": "レイヤー",
     "actions": "操作",
     "language": "言語",

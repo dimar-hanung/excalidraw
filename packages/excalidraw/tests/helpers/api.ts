@@ -28,6 +28,7 @@ import {
   newIframeElement,
   newImageElement,
   newMagicFrameElement,
+  newRichContentElement,
 } from "../../element/newElement";
 import type { AppState } from "../../types";
 import { getSelectedElements } from "../../scene/selection";
@@ -278,8 +279,7 @@ export class API {
           ...base,
         });
         break;
-      case "text":
-      case "richtext":
+      case "text": {
         const fontSize = rest.fontSize ?? appState.currentItemFontSize;
         const fontFamily = rest.fontFamily ?? appState.currentItemFontFamily;
         element = newTextElement({
@@ -294,6 +294,16 @@ export class API {
         element.width = width;
         element.height = height;
         break;
+      }
+      case "richcontent": {
+        element = newRichContentElement({
+          ...base,
+          type: "richcontent",
+        });
+        element.width = width;
+        element.height = height;
+        break;
+      }
       case "freedraw":
         element = newFreeDrawElement({
           type: type as "freedraw",

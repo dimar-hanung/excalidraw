@@ -48,7 +48,7 @@ import type {
   ExcalidrawRectangleElement,
   ExcalidrawSelectionElement,
   ExcalidrawTextElement,
-  ExcalidrawRichTextElement,
+  ExcalidrawRichContentElement,
 } from "../../excalidraw/element/types";
 import { pointsOnBezierCurves } from "points-on-curve";
 import type { Drawable, Op } from "roughjs/bin/core";
@@ -108,7 +108,7 @@ type RectangularElement =
   | ExcalidrawImageElement
   | ExcalidrawIframeElement
   | ExcalidrawTextElement
-  | ExcalidrawRichTextElement
+  | ExcalidrawRichContentElement
   | ExcalidrawSelectionElement;
 
 // polygon

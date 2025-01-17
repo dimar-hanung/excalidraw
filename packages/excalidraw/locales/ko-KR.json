@@ -71,7 +71,7 @@
     "colorPicker": "색상 선택기",
     "canvasColors": "캔버스에서 사용되었음",
     "canvasBackground": "캔버스 배경",
-    "drawingCanvas": "캔버스 그리기",
+    "interactiveCanvas": "캔버스 그리기",
     "layers": "레이어",
     "actions": "동작",
     "language": "언어",

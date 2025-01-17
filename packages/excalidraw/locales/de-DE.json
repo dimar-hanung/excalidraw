@@ -71,7 +71,7 @@
     "colorPicker": "Farbauswähler",
     "canvasColors": "Auf Leinwand verwendet",
     "canvasBackground": "Zeichenflächenhintergrund",
-    "drawingCanvas": "Leinwand",
+    "interactiveCanvas": "Leinwand",
     "layers": "Ebenen",
     "actions": "Aktionen",
     "language": "Sprache",

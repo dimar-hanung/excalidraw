@@ -168,7 +168,7 @@ const InteractiveCanvas = (props: InteractiveCanvasProps) => {
         props.appState.viewModeEnabled ? undefined : props.onDoubleClick
       }
     >
-      {t("labels.drawingCanvas")}
+      {t("labels.interactiveCanvas")}
     </canvas>
   );
 };

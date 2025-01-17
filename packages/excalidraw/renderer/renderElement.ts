@@ -8,7 +8,7 @@ import type {
   ExcalidrawFrameLikeElement,
   NonDeletedSceneElementsMap,
   ElementsMap,
-  ExcalidrawRichTextElement,
+  ExcalidrawRichContentElement,
 } from "../element/types";
 import {
   isTextElement,
@@ -65,6 +65,9 @@ import { getVerticalOffset } from "../fonts";
 import { isRightAngleRads } from "../../math";
 import { getCornerRadius } from "../shapes";
 import { getUncroppedImageElement } from "../element/cropElement";
+
+import type { Drawable } from "roughjs/bin/core";
+import { drawRichContentOnCanvas } from "../element/richcontent";
 
 // using a stronger invert (100% vs our regular 93%) and saturate
 // as a temp hack to make images in dark theme look closer to original
@@ -133,7 +136,10 @@ export const getRenderOpacity = (
 };
 
 export interface ExcalidrawElementWithCanvas {
-  element: ExcalidrawElement | ExcalidrawTextElement;
+  element:
+    | ExcalidrawElement
+    | ExcalidrawTextElement
+    | ExcalidrawRichContentElement;
   canvas: HTMLCanvasElement;
   theme: AppState["theme"];
   scale: number;
@@ -393,7 +399,8 @@ const drawElementOnCanvas = (
     case "iframe":
     case "embeddable":
     case "diamond":
-    case "ellipse": {
+    case "ellipse":
+    case "richcontent": {
       context.lineJoin = "round";
       context.lineCap = "round";
       rc.draw(ShapeCache.get(element)!);
@@ -804,7 +811,7 @@ export const renderElement = (
     case "arrow":
     case "image":
     case "text":
-    case "richtext":
+    case "richcontent":
     case "iframe":
     case "embeddable": {
       // TODO investigate if we can do this in situ. Right now we need to call

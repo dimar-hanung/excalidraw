@@ -20,7 +20,7 @@ import type {
   ElementsMap,
   NonDeletedSceneElementsMap,
   ExcalidrawTextElement,
-  ExcalidrawRichTextElement,
+  ExcalidrawRichContentElement,
   ExcalidrawArrowElement,
   OrderedExcalidrawElement,
   ExcalidrawElbowArrowElement,
@@ -1439,7 +1439,7 @@ export const distanceToBindableElement = (
     case "rectangle":
     case "image":
     case "text":
-    case "richtext":
+    case "richcontent":
     case "iframe":
     case "embeddable":
     case "frame":
@@ -1630,6 +1630,7 @@ const determineFocusDistance = (
     case "embeddable":
     case "frame":
     case "magicframe":
+    case "richcontent":
       ret = c / (hwidth * (nabs + q * mabs));
       break;
     case "diamond":
@@ -1666,7 +1667,7 @@ const determineFocusPoint = (
     case "rectangle":
     case "image":
     case "text":
-    case "richtext":
+    case "richcontent":
     case "diamond":
     case "iframe":
     case "embeddable":
@@ -1734,7 +1735,7 @@ const getSortedElementLineIntersections = (
     case "rectangle":
     case "image":
     case "text":
-    case "richtext":
+    case "richcontent":
     case "diamond":
     case "iframe":
     case "embeddable":
@@ -1774,7 +1775,7 @@ const getCorners = (
     | ExcalidrawImageElement
     | ExcalidrawDiamondElement
     | ExcalidrawTextElement
-    | ExcalidrawRichTextElement
+    | ExcalidrawRichContentElement
     | ExcalidrawIframeLikeElement
     | ExcalidrawFrameLikeElement,
   scale: number = 1,
@@ -1785,7 +1786,7 @@ const getCorners = (
     case "rectangle":
     case "image":
     case "text":
-    case "richtext":
+    case "richcontent":
     case "iframe":
     case "embeddable":
     case "frame":
@@ -1938,7 +1939,7 @@ const findFocusPointForRectangulars = (
     | ExcalidrawImageElement
     | ExcalidrawDiamondElement
     | ExcalidrawTextElement
-    | ExcalidrawRichTextElement
+    | ExcalidrawRichContentElement
     | ExcalidrawIframeLikeElement
     | ExcalidrawFrameLikeElement,
   // Between -1 and 1 for how far away should the focus point be relative

@@ -218,7 +218,7 @@ export const isExcalidrawElement = (
   }
   switch (type) {
     case "text":
-    case "richtext":
+    case "richcontent":
     case "diamond":
     case "rectangle":
     case "iframe":

@@ -71,7 +71,7 @@
     "colorPicker": "Sélecteur de couleur",
     "canvasColors": "Utilisé sur la zone de dessin",
     "canvasBackground": "Arrière-plan du canevas",
-    "drawingCanvas": "Zone de dessin",
+    "interactiveCanvas": "Zone de dessin",
     "layers": "Disposition",
     "actions": "Actions",
     "language": "Langue",

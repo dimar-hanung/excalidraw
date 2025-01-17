@@ -424,7 +424,7 @@ export const TOOL_TYPE = {
   line: "line",
   freedraw: "freedraw",
   text: "text",
-  richtext: "richtext",
+  richcontent: "richcontent",
   image: "image",
   eraser: "eraser",
   hand: "hand",

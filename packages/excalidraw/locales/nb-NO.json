@@ -71,7 +71,7 @@
     "colorPicker": "Fargevelger",
     "canvasColors": "Brukes på lerretet",
     "canvasBackground": "Lerretsbakgrunn",
-    "drawingCanvas": "Lerret",
+    "interactiveCanvas": "Lerret",
     "layers": "Lag",
     "actions": "Handlinger",
     "language": "Språk",

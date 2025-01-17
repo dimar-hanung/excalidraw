@@ -46,10 +46,9 @@ import {
   frameToolIcon,
   mermaidLogoIcon,
   laserPointerToolIcon,
-  MagicIcon,
+  TextIcon,
 } from "./icons";
 import { KEYS } from "../keys";
-import { useTunnels } from "../context/tunnels";
 import { CLASSES } from "../constants";
 
 export const canChangeStrokeColor = (
@@ -277,8 +276,7 @@ export const ShapesSwitcher = ({
   const frameToolSelected = activeTool.type === "frame";
   const laserToolSelected = activeTool.type === "laser";
   const embeddableToolSelected = activeTool.type === "embeddable";
-
-  const { TTDDialogTriggerTunnel } = useTunnels();
+  const richContentToolSelected = activeTool.type === "richcontent";
 
   return (
     <>
@@ -366,13 +364,12 @@ export const ShapesSwitcher = ({
             {t("toolBar.frame")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
-            onSelect={() => app.setActiveTool({ type: "richtext" })}
-            icon={frameToolIcon}
-            shortcut={KEYS.F.toLocaleUpperCase()}
-            data-testid="toolbar-frame"
-            selected={frameToolSelected}
+            onSelect={() => app.setActiveTool({ type: "richcontent" })}
+            icon={TextIcon}
+            data-testid="toolbar-richcontent"
+            selected={richContentToolSelected}
           >
-            {t("toolBar.richText")}
+            {t("toolBar.richContent")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "embeddable" })}

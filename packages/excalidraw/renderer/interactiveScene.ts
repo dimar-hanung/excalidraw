@@ -247,6 +247,7 @@ const renderBindingHighlightForBindableElement = (
     case "embeddable":
     case "frame":
     case "magicframe":
+    case "richcontent":
       strokeRectWithRotation(
         context,
         x1 - padding,

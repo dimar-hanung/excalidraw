@@ -79,7 +79,7 @@
     "colorPicker": "取色器",
     "canvasColors": "画布上的",
     "canvasBackground": "画布背景",
-    "drawingCanvas": "绘制画布",
+    "interactiveCanvas": "交互画布",
     "clearCanvas": "清空画布",
     "layers": "图层",
     "actions": "操作",
@@ -299,7 +299,8 @@
     "hand": "抓手（平移工具）",
     "extraTools": "更多工具",
     "mermaidToExcalidraw": "Mermaid 至 Excalidraw",
-    "magicSettings": "AI 设置"
+    "magicSettings": "AI 设置",
+    "richContent": "富文本内容"
   },
   "headings": {
     "canvasActions": "画布动作",
@@ -622,6 +623,7 @@
     "magicframe": "线框图至代码",
     "embeddable": "嵌入网页",
     "selection": "选择",
-    "iframe": "IFrame"
+    "iframe": "IFrame",
+    "richcontent": "富文本内容"
   }
 }

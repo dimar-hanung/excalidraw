@@ -22,7 +22,6 @@ import { t } from "../packages/excalidraw/i18n";
 import {
   Excalidraw,
   LiveCollaborationTrigger,
-  TTDDialogTrigger,
   StoreAction,
   reconcileElements,
 } from "../packages/excalidraw";
@@ -798,7 +797,6 @@ const ExcalidrawWrapper = () => {
         <AppFooter onChange={() => excalidrawAPI?.refresh()} />
         {excalidrawAPI && <AIComponents excalidrawAPI={excalidrawAPI} />}
 
-        <TTDDialogTrigger />
         {isCollaborating && isOffline && (
           <div className="collab-offline-warning">
             {t("alerts.collabOfflineWarning")}

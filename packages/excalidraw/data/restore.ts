@@ -70,7 +70,7 @@ export const AllowedExcalidrawActiveTools: Record<
 > = {
   selection: true,
   text: true,
-  richtext: true,
+  richcontent: true,
   rectangle: true,
   diamond: true,
   ellipse: true,
@@ -331,6 +331,7 @@ const restoreElement = (
     case "diamond":
     case "iframe":
     case "embeddable":
+    case "richcontent":
       return restoreElementWithProperties(element, {});
     case "magicframe":
     case "frame":
