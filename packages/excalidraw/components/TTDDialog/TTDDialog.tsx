@@ -6,29 +6,15 @@ import type { ChangeEventHandler } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useUIAppState } from "../../context/ui-appState";
 import { withInternalFallback } from "../hoc/withInternalFallback";
-import { TTDDialogTabTriggers } from "./TTDDialogTabTriggers";
-import { TTDDialogTabTrigger } from "./TTDDialogTabTrigger";
 import { TTDDialogTab } from "./TTDDialogTab";
-import { t } from "../../i18n";
-import { TTDDialogInput } from "./TTDDialogInput";
-import { TTDDialogOutput } from "./TTDDialogOutput";
-import { TTDDialogPanel } from "./TTDDialogPanel";
-import { TTDDialogPanels } from "./TTDDialogPanels";
 import type { MermaidToExcalidrawLibProps } from "./common";
-import {
-  convertMermaidToExcalidraw,
-  insertToEditor,
-  saveMermaidDataToStorage,
-} from "./common";
+import { convertMermaidToExcalidraw } from "./common";
 import type { NonDeletedExcalidrawElement } from "../../element/types";
 import type { BinaryFiles } from "../../types";
-import { ArrowRightIcon } from "../icons";
 
 import "./TTDDialog.scss";
 import { atom, useAtom } from "jotai";
 import { trackEvent } from "../../analytics";
-import { InlineIcon } from "../InlineIcon";
-import { TTDDialogSubmitShortcut } from "./TTDDialogSubmitShortcut";
 import { isFiniteNumber } from "../../../math";
 
 const MIN_PROMPT_LENGTH = 3;
@@ -224,7 +210,7 @@ export const TTDDialogBase = withInternalFallback(
       files: BinaryFiles | null;
     }>({ elements: [], files: null });
 
-    const [error, setError] = useState<Error | null>(null);
+    const [, setError] = useState<Error | null>(null);
 
     return (
       <Dialog
@@ -238,155 +224,11 @@ export const TTDDialogBase = withInternalFallback(
         autofocus={false}
       >
         <TTDDialogTabs dialog="ttd" tab={tab}>
-          {"__fallback" in rest && rest.__fallback ? (
-            <p className="dialog-mermaid-title">{t("mermaid.title")}</p>
-          ) : (
-            <TTDDialogTabTriggers>
-              <TTDDialogTabTrigger tab="text-to-diagram">
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  {t("labels.textToDiagram")}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "1px 6px",
-                      marginLeft: "10px",
-                      fontSize: 10,
-                      borderRadius: "12px",
-                      background: "var(--color-promo)",
-                      color: "var(--color-surface-lowest)",
-                    }}
-                  >
-                    AI Beta
-                  </div>
-                </div>
-              </TTDDialogTabTrigger>
-              <TTDDialogTabTrigger tab="mermaid">Mermaid</TTDDialogTabTrigger>
-            </TTDDialogTabTriggers>
-          )}
-
           <TTDDialogTab className="ttd-dialog-content" tab="mermaid">
             <MermaidToExcalidraw
               mermaidToExcalidrawLib={mermaidToExcalidrawLib}
             />
           </TTDDialogTab>
-          {!("__fallback" in rest) && (
-            <TTDDialogTab className="ttd-dialog-content" tab="text-to-diagram">
-              <div className="ttd-dialog-desc">
-                Currently we use Mermaid as a middle step, so you'll get best
-                results if you describe a diagram, workflow, flow chart, and
-                similar.
-              </div>
-              <TTDDialogPanels>
-                <TTDDialogPanel
-                  label={t("labels.prompt")}
-                  panelAction={{
-                    action: onGenerate,
-                    label: "Generate",
-                    icon: ArrowRightIcon,
-                  }}
-                  onTextSubmitInProgess={onTextSubmitInProgess}
-                  panelActionDisabled={
-                    prompt.length > MAX_PROMPT_LENGTH ||
-                    rateLimits?.rateLimitRemaining === 0
-                  }
-                  renderTopRight={() => {
-                    if (!rateLimits) {
-                      return null;
-                    }
-
-                    return (
-                      <div
-                        className="ttd-dialog-rate-limit"
-                        style={{
-                          fontSize: 12,
-                          marginLeft: "auto",
-                          color:
-                            rateLimits.rateLimitRemaining === 0
-                              ? "var(--color-danger)"
-                              : undefined,
-                        }}
-                      >
-                        {rateLimits.rateLimitRemaining} requests left today
-                      </div>
-                    );
-                  }}
-                  renderSubmitShortcut={() => <TTDDialogSubmitShortcut />}
-                  renderBottomRight={() => {
-                    if (typeof ttdGeneration?.generatedResponse === "string") {
-                      return (
-                        <div
-                          className="excalidraw-link"
-                          style={{ marginLeft: "auto", fontSize: 14 }}
-                          onClick={() => {
-                            if (
-                              typeof ttdGeneration?.generatedResponse ===
-                              "string"
-                            ) {
-                              saveMermaidDataToStorage(
-                                ttdGeneration.generatedResponse,
-                              );
-                              setAppState({
-                                openDialog: { name: "ttd", tab: "mermaid" },
-                              });
-                            }
-                          }}
-                        >
-                          View as Mermaid
-                          <InlineIcon icon={ArrowRightIcon} />
-                        </div>
-                      );
-                    }
-                    const ratio = prompt.length / MAX_PROMPT_LENGTH;
-                    if (ratio > 0.8) {
-                      return (
-                        <div
-                          style={{
-                            marginLeft: "auto",
-                            fontSize: 12,
-                            fontFamily: "monospace",
-                            color:
-                              ratio > 1 ? "var(--color-danger)" : undefined,
-                          }}
-                        >
-                          Length: {prompt.length}/{MAX_PROMPT_LENGTH}
-                        </div>
-                      );
-                    }
-
-                    return null;
-                  }}
-                >
-                  <TTDDialogInput
-                    onChange={handleTextChange}
-                    input={text}
-                    placeholder={"Describe what you want to see..."}
-                    onKeyboardSubmit={() => {
-                      refOnGenerate.current();
-                    }}
-                  />
-                </TTDDialogPanel>
-                <TTDDialogPanel
-                  label="Preview"
-                  panelAction={{
-                    action: () => {
-                      console.info("Panel action clicked");
-                      insertToEditor({ app, data });
-                    },
-                    label: "Insert",
-                    icon: ArrowRightIcon,
-                  }}
-                >
-                  <TTDDialogOutput
-                    canvasRef={someRandomDivRef}
-                    error={error}
-                    loaded={mermaidToExcalidrawLib.loaded}
-                  />
-                </TTDDialogPanel>
-              </TTDDialogPanels>
-            </TTDDialogTab>
-          )}
         </TTDDialogTabs>
       </Dialog>
     );

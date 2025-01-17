@@ -68,6 +68,7 @@ export const canChangeStrokeColor = (
 
   return (
     (hasStrokeColor(appState.activeTool.type) &&
+      // @ts-ignore
       appState.activeTool.type !== "image" &&
       commonSelectedType !== "image" &&
       commonSelectedType !== "frame" &&
@@ -330,6 +331,7 @@ export const ShapesSwitcher = ({
           />
         );
       })}
+
       <div className="App-toolbar__divider" />
 
       <DropdownMenu open={isExtraToolsMenuOpen}>
@@ -346,26 +348,8 @@ export const ShapesSwitcher = ({
           onToggle={() => setIsExtraToolsMenuOpen(!isExtraToolsMenuOpen)}
           title={t("toolBar.extraTools")}
         >
-          {extraToolsIcon}
-          {app.props.aiEnabled !== false && (
-            <div
-              style={{
-                display: "inline-flex",
-                marginLeft: "auto",
-                padding: "2px 4px",
-                borderRadius: 6,
-                fontSize: 8,
-                fontFamily: "Cascadia, monospace",
-                position: "absolute",
-                background: "var(--color-promo)",
-                color: "var(--color-surface-lowest)",
-                bottom: 3,
-                right: 4,
-              }}
-            >
-              AI
-            </div>
-          )}
+          <span>{extraToolsIcon}</span>
+          <span>{t("labels.more")}</span>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           onClickOutside={() => setIsExtraToolsMenuOpen(false)}
@@ -399,9 +383,8 @@ export const ShapesSwitcher = ({
             {t("toolBar.laser")}
           </DropdownMenu.Item>
           <div style={{ margin: "6px 0", fontSize: 14, fontWeight: 600 }}>
-            Generate
+            {t("labels.generate")}
           </div>
-          {app.props.aiEnabled !== false && <TTDDialogTriggerTunnel.Out />}
           <DropdownMenu.Item
             onSelect={() => app.setOpenDialog({ name: "ttd", tab: "mermaid" })}
             icon={mermaidLogoIcon}
@@ -409,18 +392,6 @@ export const ShapesSwitcher = ({
           >
             {t("toolBar.mermaidToExcalidraw")}
           </DropdownMenu.Item>
-          {app.props.aiEnabled !== false && app.plugins.diagramToCode && (
-            <>
-              <DropdownMenu.Item
-                onSelect={() => app.onMagicframeToolSelect()}
-                icon={MagicIcon}
-                data-testid="toolbar-magicframe"
-              >
-                {t("toolBar.magicframe")}
-                <DropdownMenu.Item.Badge>AI</DropdownMenu.Item.Badge>
-              </DropdownMenu.Item>
-            </>
-          )}
         </DropdownMenu.Content>
       </DropdownMenu>
     </>

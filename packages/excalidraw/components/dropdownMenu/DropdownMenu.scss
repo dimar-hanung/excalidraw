@@ -166,6 +166,9 @@
 
     .dropdown-menu-item-custom {
       margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .dropdown-menu-group-title {

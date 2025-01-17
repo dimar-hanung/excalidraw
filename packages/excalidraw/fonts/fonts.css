@@ -1,5 +1,5 @@
 /* Only UI fonts here, which are needed before the editor initializes. */
-/* These cannot be dynamically prepended with `EXCALIDRAW_ASSET_PATH`. */
+/* These cannot be dynamically prepended with `APP_ASSET_PATH`. */
 /* WARN: The following content is replaced during excalidraw-app build  */
 
 @font-face {

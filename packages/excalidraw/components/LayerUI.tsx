@@ -93,10 +93,8 @@ const DefaultMainMenu: React.FC<{
 }> = ({ UIOptions }) => {
   return (
     <MainMenu __fallback>
-      <MainMenu.DefaultItems.LoadScene />
-      <MainMenu.DefaultItems.SaveToActiveFile />
-      {/* FIXME we should to test for this inside the item itself */}
-      {UIOptions.canvasActions.export && <MainMenu.DefaultItems.Export />}
+      <MainMenu.DefaultItems.Save />
+      <MainMenu.DefaultItems.ImportExportScene />
       {/* FIXME we should to test for this inside the item itself */}
       {UIOptions.canvasActions.saveAsImage && (
         <MainMenu.DefaultItems.SaveAsImage />
@@ -105,9 +103,6 @@ const DefaultMainMenu: React.FC<{
       <MainMenu.DefaultItems.Help />
       <MainMenu.DefaultItems.ClearCanvas />
       <MainMenu.Separator />
-      <MainMenu.Group title="Excalidraw links">
-        <MainMenu.DefaultItems.Socials />
-      </MainMenu.Group>
       <MainMenu.Separator />
       <MainMenu.DefaultItems.ToggleTheme />
       <MainMenu.DefaultItems.ChangeCanvasBackground />
@@ -119,7 +114,6 @@ const DefaultOverwriteConfirmDialog = () => {
   return (
     <OverwriteConfirmDialog __fallback>
       <OverwriteConfirmDialog.Actions.SaveToDisk />
-      <OverwriteConfirmDialog.Actions.ExportToImage />
     </OverwriteConfirmDialog>
   );
 };
@@ -274,6 +268,15 @@ const LayerUI = ({
                           />
                           {heading}
                           <Stack.Row gap={1}>
+                            <HandButton
+                              checked={isHandToolActive(appState)}
+                              onChange={() => onHandToolToggle()}
+                              title={t("toolBar.hand")}
+                              isMobile
+                            />
+
+                            <div className="App-toolbar__divider" />
+
                             <PenModeButton
                               zenModeEnabled={appState.zenModeEnabled}
                               checked={appState.penMode}
@@ -285,15 +288,6 @@ const LayerUI = ({
                               checked={appState.activeTool.locked}
                               onChange={onLockToggle}
                               title={t("toolBar.lock")}
-                            />
-
-                            <div className="App-toolbar__divider" />
-
-                            <HandButton
-                              checked={isHandToolActive(appState)}
-                              onChange={() => onHandToolToggle()}
-                              title={t("toolBar.hand")}
-                              isMobile
                             />
 
                             <ShapesSwitcher

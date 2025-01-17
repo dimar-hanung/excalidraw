@@ -105,52 +105,41 @@ export const Hyperlink = ({
         return;
       }
 
-      if (!embeddableURLValidator(link, appProps.validateEmbeddable)) {
-        if (link) {
-          setToast({ message: t("toast.unableToEmbed"), closable: true });
-        }
-        element.link && embeddableLinkCache.set(element.id, element.link);
-        mutateElement(element, {
-          link,
+      const { width, height } = element;
+      const embedLink = getEmbedLink(link);
+      if (embedLink?.error instanceof URIError) {
+        setToast({
+          message: t("toast.unrecognizedLinkFormat"),
+          closable: true,
         });
-        updateEmbedValidationStatus(element, false);
-      } else {
-        const { width, height } = element;
-        const embedLink = getEmbedLink(link);
-        if (embedLink?.error instanceof URIError) {
-          setToast({
-            message: t("toast.unrecognizedLinkFormat"),
-            closable: true,
-          });
-        }
-        const ar = embedLink
-          ? embedLink.intrinsicSize.w / embedLink.intrinsicSize.h
-          : 1;
-        const hasLinkChanged =
-          embeddableLinkCache.get(element.id) !== element.link;
-        mutateElement(element, {
-          ...(hasLinkChanged
-            ? {
-                width:
-                  embedLink?.type === "video"
-                    ? width > height
-                      ? width
-                      : height * ar
-                    : width,
-                height:
-                  embedLink?.type === "video"
-                    ? width > height
-                      ? width / ar
-                      : height
-                    : height,
-              }
-            : {}),
-          link,
-        });
-        updateEmbedValidationStatus(element, true);
-        if (embeddableLinkCache.has(element.id)) {
-          embeddableLinkCache.delete(element.id);
-        }
+      }
+      const ar = embedLink
+        ? embedLink.intrinsicSize.w / embedLink.intrinsicSize.h
+        : 1;
+      const hasLinkChanged =
+        embeddableLinkCache.get(element.id) !== element.link;
+      mutateElement(element, {
+        ...(hasLinkChanged
+          ? {
+              width:
+                embedLink?.type === "video"
+                  ? width > height
+                    ? width
+                    : height * ar
+                  : width,
+              height:
+                embedLink?.type === "video"
+                  ? width > height
+                    ? width / ar
+                    : height
+                  : height,
+            }
+          : {}),
+        link,
+      });
+      updateEmbedValidationStatus(element, true);
+      if (embeddableLinkCache.has(element.id)) {
+        embeddableLinkCache.delete(element.id);
       }
     } else {
       mutateElement(element, { link });

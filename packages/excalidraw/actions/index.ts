@@ -35,9 +35,8 @@ export { actionFinalize } from "./actionFinalize";
 export {
   actionChangeProjectName,
   actionChangeExportBackground,
-  actionSaveToActiveFile,
   actionSaveFileToDisk,
-  actionLoadScene,
+  actionImportExport,
 } from "./actionExport";
 
 export { actionCopyStyles, actionPasteStyles } from "./actionStyles";
@@ -90,3 +89,5 @@ export { actionToggleLinearEditor } from "./actionLinearEditor";
 export { actionToggleSearchMenu } from "./actionToggleSearchMenu";
 
 export { actionToggleCropEditor } from "./actionCropEditor";
+
+export { actionSave } from "./actionSave";

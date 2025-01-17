@@ -86,7 +86,7 @@
     "layers": "Layers",
     "actions": "Actions",
     "language": "Language",
-    "liveCollaboration": "Live collaboration...",
+    "liveCollaboration": "Live collaboration",
     "duplicateSelection": "Duplicate",
     "untitled": "Untitled",
     "name": "Name",
@@ -120,7 +120,7 @@
     "showFonts": "Show font picker",
     "toggleTheme": "Toggle light/dark theme",
     "theme": "Theme",
-    "personalLib": "Personal Library",
+    "personalLib": "Library",
     "excalidrawLib": "Excalidraw Library",
     "decreaseFontSize": "Decrease font size",
     "increaseFontSize": "Increase font size",
@@ -165,7 +165,11 @@
     "unCroppedDimension": "Uncropped dimension",
     "copyElementLink": "Copy link to object",
     "linkToElement": "Link to object",
-    "wrapSelectionInFrame": "Wrap selection in frame"
+    "wrapSelectionInFrame": "Wrap selection in frame",
+    "more": "More",
+    "generate": "Generate",
+    "signup": "Sign up",
+    "startNow": "Start now"
   },
   "elementLink": {
     "title": "Link to object",
@@ -178,7 +182,7 @@
     "hint_emptyPrivateLibrary": "Select an item on canvas to add it here."
   },
   "search": {
-    "title": "Find on canvas",
+    "title": "Search",
     "noMatch": "No matches found...",
     "singleResult": "result",
     "multipleResults": "results",
@@ -186,12 +190,13 @@
   },
   "buttons": {
     "clearReset": "Reset the canvas",
+    "import/export": "Import/Export",
     "exportJSON": "Export to file",
-    "exportImage": "Export image...",
-    "export": "Save to...",
+    "exportImage": "Export image",
+    "export": "Export",
     "copyToClipboard": "Copy to clipboard",
     "copyLink": "Copy link",
-    "save": "Save to current file",
+    "save": "Save",
     "saveAs": "Save as",
     "load": "Open",
     "getShareableLink": "Get shareable link",
@@ -233,7 +238,7 @@
     "cannotExportEmptyCanvas": "Cannot export empty canvas.",
     "couldNotCopyToClipboard": "Couldn't copy to clipboard.",
     "decryptFailed": "Couldn't decrypt data.",
-    "uploadedSecurly": "The upload has been secured with end-to-end encryption, which means that Excalidraw server and third parties can't read the content.",
+    "uploadedSecurly": "The upload has been secured with end-to-end encryption, which means that server and third parties can't read the content.",
     "loadSceneOverridePrompt": "Loading external drawing will replace your existing content. Do you wish to continue?",
     "collabStopOverridePrompt": "Stopping the session will overwrite your previous, locally stored drawing. Are you sure?\n\n(If you want to keep your local drawing, simply close the browser tab instead.)",
     "errorAddingToLibrary": "Couldn't add item to the library",
@@ -285,7 +290,7 @@
     "freedraw": "Draw",
     "text": "Text",
     "library": "Library",
-    "lock": "Keep selected tool active after drawing",
+    "lock": "Keep the selected toolbar state active after drawing, without resetting to the \"selection\" tool.",
     "penMode": "Pen mode - prevent touch",
     "link": "Add / Update link for a selected shape",
     "eraser": "Eraser",
@@ -539,7 +544,6 @@
   "welcomeScreen": {
     "app": {
       "center_heading": "All your data is saved locally in your browser.",
-      "center_heading_plus": "Did you want to go to the Excalidraw+ instead?",
       "menuHint": "Export, preferences, languages, ..."
     },
     "defaults": {

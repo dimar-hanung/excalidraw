@@ -77,7 +77,6 @@ const Actions = Object.assign(
     return <div className="OverwriteConfirm__Actions">{children}</div>;
   },
   {
-    ExportToImage,
     SaveToDisk,
   },
 );

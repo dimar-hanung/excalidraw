@@ -285,7 +285,7 @@ export const DEFAULT_UI_OPTIONS: AppProps["UIOptions"] = {
     clearCanvas: true,
     export: { saveFileToDisk: true },
     loadScene: true,
-    saveToActiveFile: true,
+    save: true,
     toggleTheme: null,
     saveAsImage: true,
   },

@@ -183,11 +183,9 @@ describe("<Excalidraw/>", () => {
         expect(queryByTestId(container, "save-as-button")).toBeNull();
       });
 
-      it("should hide save button when saveToActiveFile is false", async () => {
+      it("should hide save button when save is false", async () => {
         const { container } = await render(
-          <Excalidraw
-            UIOptions={{ canvasActions: { saveToActiveFile: false } }}
-          />,
+          <Excalidraw UIOptions={{ canvasActions: { save: false } }} />,
         );
         //open menu
         toggleMenu(container);
@@ -243,7 +241,7 @@ describe("<Excalidraw/>", () => {
                   custom item
                 </button>
               </MainMenu.ItemCustom>
-              <MainMenu.DefaultItems.LoadScene />
+              <MainMenu.DefaultItems.ImportExportScene />
             </MainMenu>
           </Excalidraw>,
         );

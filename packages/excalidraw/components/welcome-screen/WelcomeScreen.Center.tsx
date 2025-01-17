@@ -1,4 +1,4 @@
-import { actionLoadScene, actionShortcuts } from "../../actions";
+import { actionImportExport, actionShortcuts } from "../../actions";
 import { getShortcutFromShortcutName } from "../../actions/shortcuts";
 import { t, useI18n } from "../../i18n";
 import { useDevice, useExcalidrawActionManager } from "../App";
@@ -93,7 +93,6 @@ const Center = ({ children }: { children?: React.ReactNode }) => {
       <div className="welcome-screen-center">
         {children || (
           <>
-            <Logo />
             <Heading>{t("welcomeScreen.defaults.center_heading")}</Heading>
             <Menu>
               <MenuItemLoadScene />
@@ -110,7 +109,7 @@ Center.displayName = "Center";
 const Logo = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div className="welcome-screen-center__logo excalifont welcome-screen-decor">
-      {children || <ExcalidrawLogo withText />}
+      {children || <ExcalidrawLogo />}
     </div>
   );
 };
@@ -155,7 +154,7 @@ const MenuItemLoadScene = () => {
 
   return (
     <WelcomeScreenMenuItem
-      onSelect={() => actionManager.executeAction(actionLoadScene)}
+      onSelect={() => actionManager.executeAction(actionImportExport)}
       shortcut={getShortcutFromShortcutName("loadScene")}
       icon={LoadIcon}
     >

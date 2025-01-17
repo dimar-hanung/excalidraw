@@ -4,7 +4,6 @@ import { ToolButton } from "../components/ToolButton";
 import { Tooltip } from "../components/Tooltip";
 import { DarkModeToggle } from "../components/DarkModeToggle";
 import { loadFromJSON, saveAsJSON } from "../data";
-import { resaveAsImageWithScene } from "../data/resave";
 import { t } from "../i18n";
 import { useDevice } from "../components/App";
 import { KEYS } from "../keys";
@@ -14,7 +13,6 @@ import { getExportSize } from "../scene/export";
 import { DEFAULT_EXPORT_PADDING, EXPORT_SCALES, THEME } from "../constants";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
 import { getNonDeletedElements } from "../element";
-import { isImageFileHandle } from "../data/blob";
 import { nativeFileSystemSupported } from "../data/filesystem";
 import type { Theme } from "../element/types";
 
@@ -134,61 +132,6 @@ export const actionChangeExportEmbedScene = register({
   ),
 });
 
-export const actionSaveToActiveFile = register({
-  name: "saveToActiveFile",
-  label: "buttons.save",
-  icon: ExportIcon,
-  trackEvent: { category: "export" },
-  predicate: (elements, appState, props, app) => {
-    return (
-      !!app.props.UIOptions.canvasActions.saveToActiveFile &&
-      !!appState.fileHandle &&
-      !appState.viewModeEnabled
-    );
-  },
-  perform: async (elements, appState, value, app) => {
-    const fileHandleExists = !!appState.fileHandle;
-
-    try {
-      const { fileHandle } = isImageFileHandle(appState.fileHandle)
-        ? await resaveAsImageWithScene(
-            elements,
-            appState,
-            app.files,
-            app.getName(),
-          )
-        : await saveAsJSON(elements, appState, app.files, app.getName());
-
-      return {
-        storeAction: StoreAction.NONE,
-        appState: {
-          ...appState,
-          fileHandle,
-          toast: fileHandleExists
-            ? {
-                message: fileHandle?.name
-                  ? t("toast.fileSavedToFilename").replace(
-                      "{filename}",
-                      `"${fileHandle.name}"`,
-                    )
-                  : t("toast.fileSaved"),
-              }
-            : null,
-        },
-      };
-    } catch (error: any) {
-      if (error?.name !== "AbortError") {
-        console.error(error);
-      } else {
-        console.warn(error);
-      }
-      return { storeAction: StoreAction.NONE };
-    }
-  },
-  keyTest: (event) =>
-    event.key === KEYS.S && event[KEYS.CTRL_OR_CMD] && !event.shiftKey,
-});
-
 export const actionSaveFileToDisk = register({
   name: "saveFileToDisk",
   label: "exportDialog.disk_title",
@@ -240,7 +183,7 @@ export const actionSaveFileToDisk = register({
   ),
 });
 
-export const actionLoadScene = register({
+export const actionImportExport = register({
   name: "loadScene",
   label: "buttons.load",
   trackEvent: { category: "export" },

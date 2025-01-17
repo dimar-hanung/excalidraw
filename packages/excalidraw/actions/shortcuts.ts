@@ -45,7 +45,7 @@ export type ShortcutName =
       | "toggleHandTool"
       | "setFrameAsActiveTool"
       | "saveFileToDisk"
-      | "saveToActiveFile"
+      | "save"
       | "toggleShortcuts"
       | "wrapSelectionInFrame"
     >
@@ -110,7 +110,7 @@ const shortcutMap: Record<ShortcutName, string[]> = {
   toggleHandTool: [getShortcutKey("H")],
   setFrameAsActiveTool: [getShortcutKey("F")],
   saveFileToDisk: [getShortcutKey("CtrlOrCmd+S")],
-  saveToActiveFile: [getShortcutKey("CtrlOrCmd+S")],
+  save: [getShortcutKey("CtrlOrCmd+S")],
   toggleShortcuts: [getShortcutKey("?")],
   searchMenu: [getShortcutKey("CtrlOrCmd+F")],
   wrapSelectionInFrame: [],

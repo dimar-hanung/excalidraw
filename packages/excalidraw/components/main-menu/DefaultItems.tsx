@@ -9,7 +9,6 @@ import {
 import {
   boltIcon,
   DeviceDesktopIcon,
-  ExportIcon,
   ExportImageIcon,
   HelpIcon,
   LoadIcon,
@@ -20,13 +19,11 @@ import {
   TrashIcon,
   usersIcon,
 } from "../icons";
-import { GithubIcon, DiscordIcon, XBrandIcon } from "../icons";
 import DropdownMenuItem from "../dropdownMenu/DropdownMenuItem";
-import DropdownMenuItemLink from "../dropdownMenu/DropdownMenuItemLink";
 import {
   actionClearCanvas,
-  actionLoadScene,
-  actionSaveToActiveFile,
+  actionImportExport,
+  actionSave,
   actionShortcuts,
   actionToggleSearchMenu,
   actionToggleTheme,
@@ -44,12 +41,12 @@ import type { Theme } from "../../element/types";
 import { trackEvent } from "../../analytics";
 import "./DefaultItems.scss";
 
-export const LoadScene = () => {
+export const ImportExportScene = () => {
   const { t } = useI18n();
   const actionManager = useExcalidrawActionManager();
   const elements = useExcalidrawElements();
 
-  if (!actionManager.isActionEnabled(actionLoadScene)) {
+  if (!actionManager.isActionEnabled(actionImportExport)) {
     return null;
   }
 
@@ -57,7 +54,7 @@ export const LoadScene = () => {
     if (
       !elements.length ||
       (await openConfirmModal({
-        title: t("overwriteConfirm.modal.loadFromFile.title"),
+        title: t("buttons.import/export"),
         actionLabel: t("overwriteConfirm.modal.loadFromFile.button"),
         color: "warning",
         description: (
@@ -69,7 +66,7 @@ export const LoadScene = () => {
         ),
       }))
     ) {
-      actionManager.executeAction(actionLoadScene);
+      actionManager.executeAction(actionImportExport);
     }
   };
 
@@ -79,19 +76,19 @@ export const LoadScene = () => {
       onSelect={handleSelect}
       data-testid="load-button"
       shortcut={getShortcutFromShortcutName("loadScene")}
-      aria-label={t("buttons.load")}
+      aria-label={t("buttons.import/export")}
     >
-      {t("buttons.load")}
+      {t("buttons.import/export")}
     </DropdownMenuItem>
   );
 };
-LoadScene.displayName = "LoadScene";
+ImportExportScene.displayName = "ImportExportScene";
 
-export const SaveToActiveFile = () => {
+export const Save = () => {
   const { t } = useI18n();
   const actionManager = useExcalidrawActionManager();
 
-  if (!actionManager.isActionEnabled(actionSaveToActiveFile)) {
+  if (!actionManager.isActionEnabled(actionSave)) {
     return null;
   }
 
@@ -99,13 +96,13 @@ export const SaveToActiveFile = () => {
     <DropdownMenuItem
       shortcut={getShortcutFromShortcutName("saveScene")}
       data-testid="save-button"
-      onSelect={() => actionManager.executeAction(actionSaveToActiveFile)}
+      onSelect={() => actionManager.executeAction(actionSave)}
       icon={save}
       aria-label={`${t("buttons.save")}`}
     >{`${t("buttons.save")}`}</DropdownMenuItem>
   );
 };
-SaveToActiveFile.displayName = "SaveToActiveFile";
+Save.displayName = "Save";
 
 export const SaveAsImage = () => {
   const setAppState = useExcalidrawSetAppState();
@@ -309,7 +306,7 @@ export const ChangeCanvasBackground = () => {
     <div style={{ marginTop: "0.5rem" }}>
       <div
         data-testid="canvas-background-label"
-        style={{ fontSize: ".75rem", marginBottom: ".5rem" }}
+        style={{ fontSize: "0.85rem", marginBottom: ".5rem" }}
       >
         {t("labels.canvasBackground")}
       </div>
@@ -320,55 +317,6 @@ export const ChangeCanvasBackground = () => {
   );
 };
 ChangeCanvasBackground.displayName = "ChangeCanvasBackground";
-
-export const Export = () => {
-  const { t } = useI18n();
-  const setAppState = useExcalidrawSetAppState();
-  return (
-    <DropdownMenuItem
-      icon={ExportIcon}
-      onSelect={() => {
-        setAppState({ openDialog: { name: "jsonExport" } });
-      }}
-      data-testid="json-export-button"
-      aria-label={t("buttons.export")}
-    >
-      {t("buttons.export")}
-    </DropdownMenuItem>
-  );
-};
-Export.displayName = "Export";
-
-export const Socials = () => {
-  const { t } = useI18n();
-
-  return (
-    <>
-      <DropdownMenuItemLink
-        icon={GithubIcon}
-        href="https://github.com/excalidraw/excalidraw"
-        aria-label="GitHub"
-      >
-        GitHub
-      </DropdownMenuItemLink>
-      <DropdownMenuItemLink
-        icon={XBrandIcon}
-        href="https://x.com/excalidraw"
-        aria-label="X"
-      >
-        {t("labels.followUs")}
-      </DropdownMenuItemLink>
-      <DropdownMenuItemLink
-        icon={DiscordIcon}
-        href="https://discord.gg/UexuTaE"
-        aria-label="Discord"
-      >
-        {t("labels.discordChat")}
-      </DropdownMenuItemLink>
-    </>
-  );
-};
-Socials.displayName = "Socials";
 
 export const LiveCollaborationTrigger = ({
   onSelect,

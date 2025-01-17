@@ -17,7 +17,7 @@ export default function Page() {
       <a href="/excalidraw-in-pages">Switch to Pages router</a>
       <h1 className="page-title">App Router</h1>
       <Script id="load-env-variables" strategy="beforeInteractive">
-        {`window["EXCALIDRAW_ASSET_PATH"] = window.origin;`}
+        {`window["APP_ASSET_PATH"] = window.origin;`}
       </Script>
       {/* @ts-expect-error - https://github.com/vercel/next.js/issues/42292 */}
       <ExcalidrawWithClientOnly />

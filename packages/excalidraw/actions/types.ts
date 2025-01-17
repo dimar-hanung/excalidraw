@@ -78,7 +78,7 @@ export type ActionName =
   | "changeExportBackground"
   | "changeExportEmbedScene"
   | "changeExportScale"
-  | "saveToActiveFile"
+  | "save"
   | "saveFileToDisk"
   | "loadScene"
   | "duplicateSelection"

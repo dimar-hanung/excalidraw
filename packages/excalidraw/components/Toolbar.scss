@@ -27,6 +27,11 @@
     box-shadow: none;
     border: 0;
     background-color: transparent;
+    width: 80px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
 
     &:active {
       background-color: var(--button-hover-bg);

@@ -22,7 +22,7 @@ Move the folder `excalidraw-assets` and `excalidraw-assets-dev` to the path wher
 
 By default it will try to load the files from [`https://unpkg.com/@excalidraw/excalidraw/dist/`](https://unpkg.com/@excalidraw/excalidraw/dist)
 
-If you want to load assets from a different path you can set a variable `window.EXCALIDRAW_ASSET_PATH` depending on environment (for example if you have different URL's for dev and prod) to the url from where you want to load the assets.
+If you want to load assets from a different path you can set a variable `window.APP_ASSET_PATH` depending on environment (for example if you have different URL's for dev and prod) to the url from where you want to load the assets.
 
 #### Note
 

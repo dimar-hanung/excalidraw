@@ -330,7 +330,7 @@ function CommandPaletteInner({
       ].map((action) => actionToCommand(action, DEFAULT_CATEGORIES.editor));
 
       const exportCommands: CommandPaletteItem[] = [
-        actionManager.actions.saveToActiveFile,
+        actionManager.actions.save,
         actionManager.actions.saveFileToDisk,
         actionManager.actions.copyAsPng,
         actionManager.actions.copyAsSvg,
@@ -506,22 +506,6 @@ function CommandPaletteInner({
           viewMode: false,
           perform: () => {
             app.toggleLock();
-          },
-        },
-        {
-          label: `${t("labels.textToDiagram")}...`,
-          category: DEFAULT_CATEGORIES.tools,
-          icon: brainIconThin,
-          viewMode: false,
-          predicate: appProps.aiEnabled,
-          perform: () => {
-            setAppState((state) => ({
-              ...state,
-              openDialog: {
-                name: "ttd",
-                tab: "text-to-diagram",
-              },
-            }));
           },
         },
         {

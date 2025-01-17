@@ -604,7 +604,7 @@ export type CanvasActions = Partial<{
   clearCanvas: boolean;
   export: false | ExportOpts;
   loadScene: boolean;
-  saveToActiveFile: boolean;
+  save: boolean;
   toggleTheme: boolean | null;
   saveAsImage: boolean;
 }>;
