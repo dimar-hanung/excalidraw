@@ -366,6 +366,15 @@ export const ShapesSwitcher = ({
             {t("toolBar.frame")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
+            onSelect={() => app.setActiveTool({ type: "richtext" })}
+            icon={frameToolIcon}
+            shortcut={KEYS.F.toLocaleUpperCase()}
+            data-testid="toolbar-frame"
+            selected={frameToolSelected}
+          >
+            {t("toolBar.richText")}
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "embeddable" })}
             icon={EmbedIcon}
             data-testid="toolbar-embeddable"

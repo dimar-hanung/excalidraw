@@ -20,6 +20,7 @@ import type {
   ElementsMap,
   NonDeletedSceneElementsMap,
   ExcalidrawTextElement,
+  ExcalidrawRichTextElement,
   ExcalidrawArrowElement,
   OrderedExcalidrawElement,
   ExcalidrawElbowArrowElement,
@@ -1438,6 +1439,7 @@ export const distanceToBindableElement = (
     case "rectangle":
     case "image":
     case "text":
+    case "richtext":
     case "iframe":
     case "embeddable":
     case "frame":
@@ -1664,6 +1666,7 @@ const determineFocusPoint = (
     case "rectangle":
     case "image":
     case "text":
+    case "richtext":
     case "diamond":
     case "iframe":
     case "embeddable":
@@ -1731,6 +1734,7 @@ const getSortedElementLineIntersections = (
     case "rectangle":
     case "image":
     case "text":
+    case "richtext":
     case "diamond":
     case "iframe":
     case "embeddable":
@@ -1770,6 +1774,7 @@ const getCorners = (
     | ExcalidrawImageElement
     | ExcalidrawDiamondElement
     | ExcalidrawTextElement
+    | ExcalidrawRichTextElement
     | ExcalidrawIframeLikeElement
     | ExcalidrawFrameLikeElement,
   scale: number = 1,
@@ -1780,6 +1785,7 @@ const getCorners = (
     case "rectangle":
     case "image":
     case "text":
+    case "richtext":
     case "iframe":
     case "embeddable":
     case "frame":
@@ -1932,6 +1938,7 @@ const findFocusPointForRectangulars = (
     | ExcalidrawImageElement
     | ExcalidrawDiamondElement
     | ExcalidrawTextElement
+    | ExcalidrawRichTextElement
     | ExcalidrawIframeLikeElement
     | ExcalidrawFrameLikeElement,
   // Between -1 and 1 for how far away should the focus point be relative

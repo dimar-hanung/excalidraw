@@ -6490,7 +6490,10 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    if (this.state.activeTool.type === "text") {
+    if (
+      this.state.activeTool.type === "text" ||
+      this.state.activeTool.type === "richtext"
+    ) {
       this.handleTextOnPointerDown(event, pointerDownState);
     } else if (
       this.state.activeTool.type === "arrow" ||

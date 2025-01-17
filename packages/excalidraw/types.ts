@@ -126,6 +126,7 @@ export type ToolType =
   | "line"
   | "freedraw"
   | "text"
+  | "richtext"
   | "image"
   | "eraser"
   | "hand"

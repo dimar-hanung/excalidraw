@@ -8,6 +8,7 @@ import type {
   ExcalidrawFrameLikeElement,
   NonDeletedSceneElementsMap,
   ElementsMap,
+  ExcalidrawRichTextElement,
 } from "../element/types";
 import {
   isTextElement,
@@ -803,6 +804,7 @@ export const renderElement = (
     case "arrow":
     case "image":
     case "text":
+    case "richtext":
     case "iframe":
     case "embeddable": {
       // TODO investigate if we can do this in situ. Right now we need to call

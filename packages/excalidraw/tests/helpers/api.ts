@@ -279,6 +279,7 @@ export class API {
         });
         break;
       case "text":
+      case "richtext":
         const fontSize = rest.fontSize ?? appState.currentItemFontSize;
         const fontFamily = rest.fontFamily ?? appState.currentItemFontFamily;
         element = newTextElement({

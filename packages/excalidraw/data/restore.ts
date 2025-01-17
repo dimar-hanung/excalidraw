@@ -70,6 +70,7 @@ export const AllowedExcalidrawActiveTools: Record<
 > = {
   selection: true,
   text: true,
+  richtext: true,
   rectangle: true,
   diamond: true,
   ellipse: true,
