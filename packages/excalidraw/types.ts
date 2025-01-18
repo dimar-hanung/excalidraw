@@ -193,6 +193,7 @@ export type InteractiveCanvasAppState = Readonly<
   _CommonCanvasAppState & {
     // renderInteractiveScene
     activeEmbeddable: AppState["activeEmbeddable"];
+    activeRichContent: AppState["activeRichContent"];
     editingLinearElement: AppState["editingLinearElement"];
     selectionElement: AppState["selectionElement"];
     selectedGroupIds: AppState["selectedGroupIds"];
@@ -245,6 +246,10 @@ export interface AppState {
   isLoading: boolean;
   errorMessage: React.ReactNode;
   activeEmbeddable: {
+    element: NonDeletedExcalidrawElement;
+    state: "hover" | "active";
+  } | null;
+  activeRichContent: {
     element: NonDeletedExcalidrawElement;
     state: "hover" | "active";
   } | null;

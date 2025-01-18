@@ -26,6 +26,7 @@ import type {
   PointBinding,
   FixedPointBinding,
   ExcalidrawFlowchartNodeElement,
+  ExcalidrawRichContentElement,
 } from "./types";
 
 export const isInitializedImageElement = (
@@ -44,6 +45,12 @@ export const isEmbeddableElement = (
   element: ExcalidrawElement | null | undefined,
 ): element is ExcalidrawEmbeddableElement => {
   return !!element && element.type === "embeddable";
+};
+
+export const isRichContentElement = (
+  element: ExcalidrawElement | null | undefined,
+): element is ExcalidrawRichContentElement => {
+  return !!element && element.type === "richcontent";
 };
 
 export const isIframeElement = (

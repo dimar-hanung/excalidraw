@@ -175,6 +175,11 @@
     "signup": "登录",
     "startNow": "立即开始创作"
   },
+  "elementLink": {
+    "title": "链接到对象",
+    "desc": "点击画布上的一个形状或粘贴一个链接。",
+    "notFound": "未在画布上找到链接的对象。"
+},
   "library": {
     "noItems": "尚未添加任何项目……",
     "hint_emptyLibrary": "选中画布上的项目添加到此处，或从下方的公共素材库中导入。",

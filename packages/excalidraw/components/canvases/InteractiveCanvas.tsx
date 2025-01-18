@@ -201,6 +201,7 @@ const getRelevantAppStateProps = (
   elementsToHighlight: appState.elementsToHighlight,
   collaborators: appState.collaborators, // Necessary for collab. sessions
   activeEmbeddable: appState.activeEmbeddable,
+  activeRichContent: appState.activeRichContent,
   snapLines: appState.snapLines,
   zenModeEnabled: appState.zenModeEnabled,
   editingTextElement: appState.editingTextElement,

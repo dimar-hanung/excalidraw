@@ -13,6 +13,7 @@ import {
   hasBoundTextElement,
   isIframeLikeElement,
   isImageElement,
+  isRichContentElement,
   isTextElement,
 } from "./typeChecks";
 import { getBoundTextShape, isPathALoop } from "../shapes";
@@ -28,6 +29,7 @@ export const shouldTestInside = (element: ExcalidrawElement) => {
     !isTransparent(element.backgroundColor) ||
     hasBoundTextElement(element) ||
     isIframeLikeElement(element) ||
+    isRichContentElement(element) ||
     isTextElement(element);
 
   if (element.type === "line") {

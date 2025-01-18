@@ -166,6 +166,7 @@ import {
   isTextBindableContainer,
   isElbowArrow,
   isFlowchartNodeElement,
+  isRichContentElement,
 } from "../element/typeChecks";
 import type {
   ExcalidrawBindableElement,
@@ -191,6 +192,7 @@ import type {
   ExcalidrawNonSelectionElement,
   ExcalidrawArrowElement,
   NonDeletedSceneElementsMap,
+  ExcalidrawRichContentElement,
 } from "../element/types";
 import { getCenter, getDistance } from "../gesture";
 import {
@@ -468,6 +470,7 @@ import { cropElement } from "../element/cropElement";
 import { wrapText } from "../element/textWrapping";
 import { actionCopyElementLink } from "../actions/actionElementLink";
 import { isElementLink, parseElementLinkFromURL } from "../element/elementLink";
+import { RichContentEditor } from "./RichContentEditor";
 
 const AppContext = React.createContext<AppClassProperties>(null!);
 const AppPropsContext = React.createContext<AppProps>(null!);
@@ -859,6 +862,22 @@ class App extends React.Component<AppProps, AppState> {
     return this.iFrameRefs.get(element.id);
   }
 
+  private handleRichContentCenterClick(element: ExcalidrawIframeLikeElement) {
+    if (
+      this.state.activeRichContent?.element === element &&
+      this.state.activeRichContent?.state === "active"
+    ) {
+      return;
+    }
+
+    this.setState({
+      activeRichContent: { element, state: "active" },
+      selectedElementIds: { [element.id]: true },
+      newElement: null,
+      selectionElement: null,
+    });
+  }
+
   private handleEmbeddableCenterClick(element: ExcalidrawIframeLikeElement) {
     if (
       this.state.activeEmbeddable?.element === element &&
@@ -953,6 +972,28 @@ class App extends React.Component<AppProps, AppState> {
       (this.state.activeEmbeddable?.element !== el ||
         this.state.activeEmbeddable?.state === "hover" ||
         !this.state.activeEmbeddable) &&
+      sceneX >= el.x + el.width / 3 &&
+      sceneX <= el.x + (2 * el.width) / 3 &&
+      sceneY >= el.y + el.height / 3 &&
+      sceneY <= el.y + (2 * el.height) / 3
+    );
+  }
+
+  private isRichContentElementCenter(
+    el: ExcalidrawRichContentElement | null,
+    event: React.PointerEvent<HTMLElement> | PointerEvent,
+    sceneX: number,
+    sceneY: number,
+  ) {
+    return (
+      el &&
+      !event.altKey &&
+      !event.shiftKey &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      (this.state.activeRichContent?.element !== el ||
+        this.state.activeRichContent?.state === "hover" ||
+        !this.state.activeRichContent) &&
       sceneX >= el.x + el.width / 3 &&
       sceneX <= el.x + (2 * el.width) / 3 &&
       sceneY >= el.y + el.height / 3 &&
@@ -1282,6 +1323,129 @@ class App extends React.Component<AppProps, AppState> {
                       } allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads`}
                     />
                   )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
+  }
+
+  private renderRichContents() {
+    const scale = this.state.zoom.value;
+    const normalizedWidth = this.state.width;
+    const normalizedHeight = this.state.height;
+
+    const richContentElements = this.scene
+      .getNonDeletedElements()
+      .filter((el): el is Ordered<NonDeleted<ExcalidrawIframeLikeElement>> =>
+        isRichContentElement(el),
+      );
+
+    return (
+      <>
+        {richContentElements.map((el) => {
+          const { x, y } = sceneCoordsToViewportCoords(
+            { sceneX: el.x, sceneY: el.y },
+            this.state,
+          );
+
+          const isVisible = isElementInViewport(
+            el,
+            normalizedWidth,
+            normalizedHeight,
+            this.state,
+            this.scene.getNonDeletedElementsMap(),
+          );
+          const hasBeenInitialized = this.initializedEmbeds.has(el.id);
+
+          if (isVisible && !hasBeenInitialized) {
+            this.initializedEmbeds.add(el.id);
+          }
+          const shouldRender = isVisible || hasBeenInitialized;
+
+          if (!shouldRender) {
+            return null;
+          }
+
+          const isActive =
+            this.state.activeRichContent?.element === el &&
+            this.state.activeRichContent?.state === "active";
+          const isHovered =
+            this.state.activeRichContent?.element === el &&
+            this.state.activeRichContent?.state === "hover";
+
+          return (
+            <div
+              key={el.id}
+              className={clsx(
+                "excalidraw__embeddable-container excalidraw__richcontent-container",
+                {
+                  "is-hovered": isHovered,
+                },
+              )}
+              style={{
+                transform: isVisible
+                  ? `translate(${x - this.state.offsetLeft}px, ${
+                      y - this.state.offsetTop
+                    }px) scale(${scale})`
+                  : "none",
+                display: isVisible ? "block" : "none",
+                opacity: getRenderOpacity(
+                  el,
+                  getContainingFrame(el, this.scene.getNonDeletedElementsMap()),
+                  this.elementsPendingErasure,
+                  null,
+                  this.state.openDialog?.name === "elementLinkSelector"
+                    ? DEFAULT_REDUCED_GLOBAL_ALPHA
+                    : 1,
+                ),
+                ["--embeddable-radius" as string]: `${getCornerRadius(
+                  Math.min(el.width, el.height),
+                  el,
+                )}px`,
+              }}
+            >
+              <div
+                //this is a hack that addresses isse with embedded excalidraw.com embeddable
+                //https://github.com/excalidraw/excalidraw/pull/6691#issuecomment-1607383938
+                /*ref={(ref) => {
+                  if (!this.excalidrawContainerRef.current) {
+                    return;
+                  }
+                  const container = this.excalidrawContainerRef.current;
+                  const sh = container.scrollHeight;
+                  const ch = container.clientHeight;
+                  if (sh !== ch) {
+                    container.style.height = `${sh}px`;
+                    setTimeout(() => {
+                      container.style.height = `100%`;
+                    });
+                  }
+                }}*/
+                className="excalidraw__embeddable-container__inner excalidraw__richcontent-container__inner"
+                style={{
+                  width: isVisible ? `${el.width}px` : 0,
+                  height: isVisible ? `${el.height}px` : 0,
+                  transform: isVisible ? `rotate(${el.angle}rad)` : "none",
+                  pointerEvents: isActive
+                    ? POINTER_EVENTS.enabled
+                    : POINTER_EVENTS.disabled,
+                }}
+              >
+                {isHovered && (
+                  <div className="excalidraw__embeddable-hint">
+                    {t("buttons.embeddableInteractionButton")}
+                  </div>
+                )}
+                <div
+                  className="excalidraw__embeddable__outer"
+                  style={{
+                    padding: `${el.strokeWidth}px`,
+                  }}
+                >
+                  <RichContentEditor theme={this.state.theme} scale={scale} />
                 </div>
               </div>
             </div>
@@ -1803,6 +1967,7 @@ class App extends React.Component<AppProps, AppState> {
                         {this.renderFrameNames()}
                       </ExcalidrawActionManagerContext.Provider>
                       {this.renderEmbeddables()}
+                      {this.renderRichContents()}
                     </ExcalidrawElementsContext.Provider>
                   </ExcalidrawAppStateContext.Provider>
                 </ExcalidrawSetAppStateContext.Provider>
@@ -2970,6 +3135,7 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({
         selectedElementIds: makeNextSelectedElementIds({}, this.state),
         activeEmbeddable: null,
+        activeRichContent: null,
       });
     }
   };
@@ -4589,6 +4755,7 @@ class App extends React.Component<AppProps, AppState> {
           selectedGroupIds: {},
           editingGroupId: null,
           activeEmbeddable: null,
+          activeRichContent: null,
         });
       }
       isHoldingSpace = false;
@@ -4720,6 +4887,7 @@ class App extends React.Component<AppProps, AppState> {
         snapLines: prevState.snapLines.length ? [] : prevState.snapLines,
         originSnapOffset: null,
         activeEmbeddable: null,
+        activeRichContent: null,
       } as const;
 
       if (nextActiveTool.type === "freedraw") {
@@ -4787,6 +4955,7 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({
         selectedElementIds: makeNextSelectedElementIds({}, this.state),
         activeEmbeddable: null,
+        activeRichContent: null,
       });
     }
     gesture.initialScale = this.state.zoom.value;
@@ -4965,6 +5134,7 @@ class App extends React.Component<AppProps, AppState> {
       selectedGroupIds: {},
       editingGroupId: null,
       activeEmbeddable: null,
+      activeRichContent: null,
     });
   }
 
@@ -5074,6 +5244,10 @@ class App extends React.Component<AppProps, AppState> {
         // terms of hit testing.
         if (isIframeElement(el)) {
           iframeLikes.push(el);
+          return false;
+        }
+        if (isRichContentElement(el)) {
+          iframeLikes.push(el as any);
           return false;
         }
         return true;
@@ -5424,6 +5598,13 @@ class App extends React.Component<AppProps, AppState> {
     resetCursor(this.interactiveCanvas);
     if (!event[KEYS.CTRL_OR_CMD] && !this.state.viewModeEnabled) {
       const hitElement = this.getElementAtPosition(sceneX, sceneY);
+
+      if (isRichContentElement(hitElement)) {
+        this.setState({
+          activeRichContent: { element: hitElement, state: "active" },
+        });
+        return;
+      }
 
       if (isIframeLikeElement(hitElement)) {
         this.setState({
@@ -6038,6 +6219,20 @@ class App extends React.Component<AppProps, AppState> {
         ) {
           if (
             hitElement &&
+            isRichContentElement(hitElement) &&
+            this.isRichContentElementCenter(
+              hitElement,
+              event,
+              scenePointerX,
+              scenePointerY,
+            )
+          ) {
+            setCursor(this.interactiveCanvas, CURSOR_TYPE.POINTER);
+            this.setState({
+              activeRichContent: { element: hitElement, state: "hover" },
+            });
+          } else if (
+            hitElement &&
             isIframeLikeElement(hitElement) &&
             this.isIframeLikeElementCenter(
               hitElement,
@@ -6619,6 +6814,17 @@ class App extends React.Component<AppProps, AppState> {
         scenePointer.y,
       );
       if (
+        isRichContentElement(hitElement) &&
+        this.isRichContentElementCenter(
+          hitElement,
+          event,
+          scenePointer.x,
+          scenePointer.y,
+        )
+      ) {
+        this.handleRichContentCenterClick(hitElement);
+        return;
+      } else if (
         isIframeLikeElement(hitElement) &&
         this.isIframeLikeElementCenter(
           hitElement,
@@ -6649,6 +6855,17 @@ class App extends React.Component<AppProps, AppState> {
     ) {
       if (
         clicklength < 300 &&
+        isRichContentElement(this.hitLinkElement) &&
+        !isPointHittingLinkIcon(
+          this.hitLinkElement,
+          this.scene.getNonDeletedElementsMap(),
+          this.state,
+          pointFrom(scenePointer.x, scenePointer.y),
+        )
+      ) {
+        this.handleRichContentCenterClick(this.hitLinkElement);
+      } else if (
+        clicklength < 300 &&
         isIframeLikeElement(this.hitLinkElement) &&
         !isPointHittingLinkIcon(
           this.hitLinkElement,
@@ -6664,6 +6881,7 @@ class App extends React.Component<AppProps, AppState> {
     } else if (this.state.viewModeEnabled) {
       this.setState({
         activeEmbeddable: null,
+        activeRichContent: null,
         selectedElementIds: {},
       });
     }
@@ -6954,6 +7172,7 @@ class App extends React.Component<AppProps, AppState> {
         selectedGroupIds: {},
         editingGroupId: null,
         activeEmbeddable: null,
+        activeRichContent: null,
       });
     }
   };
@@ -7163,6 +7382,7 @@ class App extends React.Component<AppProps, AppState> {
                 selectedGroupIds: {},
                 editingGroupId: null,
                 activeEmbeddable: null,
+                activeRichContent: null,
               });
             }
 
@@ -8135,7 +8355,8 @@ class App extends React.Component<AppProps, AppState> {
           selectedElements.length > 0 &&
           !pointerDownState.withCmdOrCtrl &&
           !this.state.editingTextElement &&
-          this.state.activeEmbeddable?.state !== "active"
+          this.state.activeEmbeddable?.state !== "active" &&
+          this.state.activeRichContent?.state !== "active"
         ) {
           const dragOffset = {
             x: pointerCoords.x - pointerDownState.origin.x,
@@ -9381,6 +9602,7 @@ class App extends React.Component<AppProps, AppState> {
             selectedGroupIds: {},
             editingGroupId: null,
             activeEmbeddable: null,
+            activeRichContent: null,
           });
         }
         // reset cursor
@@ -9458,6 +9680,23 @@ class App extends React.Component<AppProps, AppState> {
       }
 
       if (
+        hitElement &&
+        this.lastPointerUpEvent &&
+        this.lastPointerDownEvent &&
+        this.lastPointerUpEvent.timeStamp -
+          this.lastPointerDownEvent.timeStamp <
+          300 &&
+        gesture.pointers.size <= 1 &&
+        isRichContentElement(hitElement) &&
+        this.isRichContentElementCenter(
+          hitElement,
+          this.lastPointerUpEvent,
+          pointerDownState.origin.x,
+          pointerDownState.origin.y,
+        )
+      ) {
+        this.handleRichContentCenterClick(hitElement);
+      } else if (
         hitElement &&
         this.lastPointerUpEvent &&
         this.lastPointerDownEvent &&
@@ -9981,6 +10220,7 @@ class App extends React.Component<AppProps, AppState> {
     this.setState((prevState) => ({
       selectedElementIds: makeNextSelectedElementIds({}, prevState),
       activeEmbeddable: null,
+      activeRichContent: null,
       selectedGroupIds: {},
       // Continue editing the same group if the user selected a different
       // element from it
@@ -9994,6 +10234,7 @@ class App extends React.Component<AppProps, AppState> {
     this.setState({
       selectedElementIds: makeNextSelectedElementIds({}, this.state),
       activeEmbeddable: null,
+      activeRichContent: null,
       previousSelectedElementIds: this.state.selectedElementIds,
     });
   }
@@ -10513,6 +10754,7 @@ class App extends React.Component<AppProps, AppState> {
       isResizing: transformHandleType && transformHandleType !== "rotation",
       isRotating: transformHandleType === "rotation",
       activeEmbeddable: null,
+      activeRichContent: null,
     });
     const pointerCoords = pointerDownState.lastCoords;
     let [resizeX, resizeY] = getGridPoint(

@@ -66,9 +66,6 @@ import { isRightAngleRads } from "../../math";
 import { getCornerRadius } from "../shapes";
 import { getUncroppedImageElement } from "../element/cropElement";
 
-import type { Drawable } from "roughjs/bin/core";
-import { drawRichContentOnCanvas } from "../element/richcontent";
-
 // using a stronger invert (100% vs our regular 93%) and saturate
 // as a temp hack to make images in dark theme look closer to original
 // color scheme (it's still not quite there and the colors look slightly
