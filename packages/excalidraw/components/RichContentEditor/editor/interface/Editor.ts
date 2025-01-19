@@ -73,7 +73,7 @@ export interface IEditorOption {
   maskMargin?: IMargin;
   letterClass?: string[];
   contextMenuDisableKeys?: string[];
-  contextMenuDisabled?: boolean;
+  contextMenuKeys?: string[];
   scrollContainerSelector?: string;
   wordBreak?: WordBreak;
   table?: ITableOption;

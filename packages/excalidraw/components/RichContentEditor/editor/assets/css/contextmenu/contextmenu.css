@@ -194,3 +194,7 @@
 .ce-contextmenu-border-td-back {
   background-image: url(../../../assets/images/table-border-td-back.svg);
 }
+
+.ce-contextmenu-original-size {
+  background-image: url(../../../assets/images/original-size.svg);
+}

@@ -1,4 +1,4 @@
-import {
+import type {
   IContentChange,
   IControlChange,
   IIntersectionPageNoChange,
@@ -10,22 +10,22 @@ import {
   IRangeStyleChange,
   ISaved,
   IVisiblePageNoListChange,
-  IZoneChange
-} from './Listener'
+  IZoneChange,
+} from "./Listener";
 
 export interface EventBusMap {
-  rangeStyleChange: IRangeStyleChange
-  visiblePageNoListChange: IVisiblePageNoListChange
-  intersectionPageNoChange: IIntersectionPageNoChange
-  pageSizeChange: IPageSizeChange
-  pageScaleChange: IPageScaleChange
-  saved: ISaved
-  contentChange: IContentChange
-  controlChange: IControlChange
-  pageModeChange: IPageModeChange
-  zoneChange: IZoneChange
-  mousemove: IMouseEventChange
-  mouseleave: IMouseEventChange
-  mouseenter: IMouseEventChange
-  positionContextChange: IPositionContextChange
+  rangeStyleChange: IRangeStyleChange;
+  visiblePageNoListChange: IVisiblePageNoListChange;
+  intersectionPageNoChange: IIntersectionPageNoChange;
+  pageSizeChange: IPageSizeChange;
+  pageScaleChange: IPageScaleChange;
+  saved: ISaved;
+  contentChange: IContentChange;
+  controlChange: IControlChange;
+  pageModeChange: IPageModeChange;
+  zoneChange: IZoneChange;
+  mousemove: IMouseEventChange;
+  mouseleave: IMouseEventChange;
+  mouseenter: IMouseEventChange;
+  positionContextChange: IPositionContextChange;
 }

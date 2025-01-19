@@ -5,7 +5,8 @@
       "copy": "Copy",
       "paste": "Paste",
       "selectAll": "Select all",
-      "print": "Print"
+      "print": "Print",
+      "autoAdjustSize": "Auto Adjust Size"
     },
     "control": {
       "delete": "Delete control"
@@ -25,7 +26,8 @@
         "surround": "Surround",
         "floatTop": "Float above text",
         "floatBottom": "Float below text"
-      }
+      },
+      "insert": "Insert image"
     },
     "table": {
       "insertRowCol": "Insert row col",

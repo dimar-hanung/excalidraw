@@ -1462,8 +1462,8 @@ class App extends React.Component<AppProps, AppState> {
                       height: element.height,
                       scale,
                     }}
-                    content={this.richContentData}
                     onChange={this.onRichContentChange}
+                    onAdjustSize={this.onRichContentAdjustSize}
                   />
                 </div>
               </div>
@@ -1473,8 +1473,6 @@ class App extends React.Component<AppProps, AppState> {
       </>
     );
   }
-
-  private richContentData = [];
 
   /**
    * 响应数据变更，并将数据存到localStorage中
@@ -1490,6 +1488,20 @@ class App extends React.Component<AppProps, AppState> {
     const elements = this.getSceneElements();
     const { state, files } = this;
     this.props.onChange?.(elements, state, files);
+  };
+
+  private onRichContentAdjustSize = (
+    element: ExcalidrawRichContentElement,
+    newSize: { width: number; height: number },
+  ) => {
+    // @ts-ignore
+    element.width = newSize.width;
+    // @ts-ignore
+    element.height = newSize.height;
+    const elements = this.getSceneElements();
+    const { state, files } = this;
+    this.props.onChange?.(elements, state, files);
+    this.forceUpdate();
   };
 
   private getFrameNameDOMId = (frameElement: ExcalidrawElement) => {

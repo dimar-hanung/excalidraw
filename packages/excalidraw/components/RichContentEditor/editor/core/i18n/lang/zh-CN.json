@@ -5,7 +5,8 @@
       "copy": "复制",
       "paste": "粘贴",
       "selectAll": "全选",
-      "print": "打印"
+      "print": "打印",
+      "autoAdjustSize": "自动调整尺寸"
     },
     "control": {
       "delete": "删除控件"
@@ -25,7 +26,8 @@
         "surround": "四周型环绕",
         "floatTop": "浮于文字上方",
         "floatBottom": "衬于文字下方"
-      }
+      },
+      "insert": "插入图片"
     },
     "table": {
       "insertRowCol": "插入行列",

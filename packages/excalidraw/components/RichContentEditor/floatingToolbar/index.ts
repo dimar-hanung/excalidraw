@@ -337,9 +337,14 @@ export default function floatingToolbarPlugin(editor: Editor) {
     if (strikeoutDom) {
       toggleToolbarItemActive(strikeoutDom, rangeStyle.strikeout);
     }
-    toggleToolbarVisible(toolbarContainer, true);
 
-    // 定位
+    toggleToolbarVisible(toolbarContainer, true);
+    adjustPosition();
+  });
+
+  // 定位
+  function adjustPosition() {
+    const context = editor.command.getRangeContext()!;
     const position = context.rangeRects[0];
 
     let left = position.x;
@@ -359,5 +364,5 @@ export default function floatingToolbarPlugin(editor: Editor) {
 
     toolbarContainer.style.left = `${left}px`;
     toolbarContainer.style.top = `${top}px`;
-  });
+  }
 }

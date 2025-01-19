@@ -85,11 +85,25 @@ export class ContextMenu {
   private _filterMenuList(
     menuList: IRegisterContextMenu[],
   ): IRegisterContextMenu[] {
-    const { contextMenuDisableKeys, contextMenuDisabled } = this.options;
-    if (contextMenuDisabled) {
-      return [];
-    }
+    const { contextMenuDisableKeys, contextMenuKeys } = this.options;
     const renderList: IRegisterContextMenu[] = [];
+
+    // 如果传入了contextMenuKeys，就只渲染这些菜单
+    if (contextMenuKeys.length) {
+      contextMenuKeys.forEach((key) => {
+        if (key === "divider") {
+          renderList.push({ isDivider: true });
+          return;
+        }
+
+        const menu = menuList.find((menu) => menu.key === key);
+        if (menu) {
+          renderList.push(menu);
+        }
+      });
+      return renderList;
+    }
+
     for (let m = 0; m < menuList.length; m++) {
       const menu = menuList[m];
       if (
@@ -204,6 +218,7 @@ export class ContextMenu {
 
   private _render(payload: IRenderPayload): HTMLDivElement {
     const { contextMenuList, left, top, parentMenuContainer } = payload;
+
     const contextMenuContainer = this._createContextMenuContainer();
     const contextMenuContent = document.createElement("div");
     contextMenuContent.classList.add(`${EDITOR_PREFIX}-contextmenu-content`);
@@ -306,19 +321,40 @@ export class ContextMenu {
     }
     contextMenuContainer.append(contextMenuContent);
     contextMenuContainer.style.display = "block";
+
     // 右侧空间不足时，以菜单右上角作为起始点
     const innerWidth = window.innerWidth;
     const contextmenuRect = contextMenuContainer.getBoundingClientRect();
     const contextMenuWidth = contextmenuRect.width;
     const adjustLeft =
       left + contextMenuWidth > innerWidth ? left - contextMenuWidth : left;
-    contextMenuContainer.style.left = `${adjustLeft}px`;
+    // contextMenuContainer.style.left = `${adjustLeft}px`;
+
     // 下侧空间不足时，以菜单底部作为起始点
     const innerHeight = window.innerHeight;
     const contextMenuHeight = contextmenuRect.height;
     const adjustTop =
       top + contextMenuHeight > innerHeight ? top - contextMenuHeight : top;
-    contextMenuContainer.style.top = `${adjustTop}px`;
+    // contextMenuContainer.style.top = `${adjustTop}px`;
+
+    // 根据外部容器的位置，重新调整相对位置
+    const container = this.container.parentNode!;
+    // @ts-ignore
+    const containerRect = container.getBoundingClientRect();
+    // @NOTICE 此处与整个系统有耦合，不具备通用性
+    // @ts-ignore
+    const containerScrollTop = container.parentNode?.scrollTop;
+    const containerBottom = containerRect.bottom;
+
+    const finalLeft = adjustLeft - containerRect.left;
+    contextMenuContainer.style.left = `${finalLeft}px`;
+    const computedTop = adjustTop - containerRect.top - containerScrollTop;
+    const finalTop =
+      adjustTop + contextMenuHeight > containerBottom
+        ? computedTop - contextMenuHeight
+        : computedTop;
+    contextMenuContainer.style.top = `${finalTop}px`;
+
     this.contextMenuContainerList.push(contextMenuContainer);
     return contextMenuContainer;
   }

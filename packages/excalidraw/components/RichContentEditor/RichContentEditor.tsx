@@ -16,14 +16,17 @@ export function RichContentEditor(
     theme: Theme;
     offset: { left: number; top: number };
     size: { width: number; height: number; scale: number };
-    content: any;
     onChange: (element: ExcalidrawRichContentElement, content: any) => void;
+    onAdjustSize: (
+      element: ExcalidrawRichContentElement,
+      newSize: { width: number; height: number },
+    ) => void;
   }>,
 ) {
   const container = useRef<HTMLDivElement>(null);
   const editor = useRef<Editor>();
   const { langCode } = useI18n();
-  const { theme, onChange, element, size } = props;
+  const { theme, onChange, onAdjustSize, element, size } = props;
 
   useEffect(() => {
     // @ts-ignore
@@ -51,7 +54,13 @@ export function RichContentEditor(
       defaultTabWidth: 32,
       scrollContainerSelector: container.current?.id,
       zone: { tipDisabled: true },
-      contextMenuDisabled: true,
+      contextMenuKeys: [
+        "imageInsert",
+        "imageChange",
+        "imageSaveAs",
+        "divider",
+        "globalAutoAdjustSize",
+      ],
       renderMode: RenderMode.COMPATIBILITY,
     });
 
@@ -77,22 +86,6 @@ export function RichContentEditor(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const resizeObserver = new ResizeObserver((entries) => {
-  //     for (const entry of entries) {
-  //       const { width, height } = entry.contentRect;
-  //       const w = Math.max(width - 32, 0);
-  //       const h = Math.max(height - 26, 0);
-  //       editor.current?.command.executePageScale(scale);
-  //       editor.current?.command.executePaperSize(w, h);
-  //     }
-  //   });
-  //   resizeObserver.observe(container.current!);
-
-  //   return () => {
-  //     resizeObserver.disconnect();
-  //   };
-  // }, []);
   useEffect(() => {
     editor.current?.command.executePageScale(size.scale);
     editor.current?.command.executePaperSize(size.width, size.height);
@@ -111,6 +104,21 @@ export function RichContentEditor(
   }, [onChange, element]);
 
   useEffect(() => {
+    const notify = (evt: CustomEvent) => {
+      const { detail } = evt;
+      const { width, height } = detail;
+      onAdjustSize(element, { width, height });
+    };
+    const box = container.current!;
+    // @ts-ignore
+    box.addEventListener("adjust-size", notify);
+    return () => {
+      // @ts-ignore
+      box.removeEventListener("adjust-size", notify);
+    };
+  }, [onAdjustSize, element]);
+
+  useEffect(() => {
     editor.current?.command.setCursorColor(
       theme === THEME.DARK ? "#fff" : "#000",
     );
@@ -123,7 +131,8 @@ export function RichContentEditor(
   return (
     <div
       className="rich-content-editor"
-      id={`rich-content-editor-${Math.ceil(Math.random() * 10000)}`}
+      id={`rich-content-editor-${element.id}`}
+      data-element-id={element.id}
       style={{
         width: "100%",
         height: "100%",
