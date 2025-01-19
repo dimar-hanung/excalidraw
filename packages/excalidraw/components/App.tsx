@@ -1378,6 +1378,9 @@ class App extends React.Component<AppProps, AppState> {
             this.state.activeRichContent?.element === element &&
             this.state.activeRichContent?.state === "hover";
 
+          const width = isVisible ? element.width * scale : 0;
+          const height = isVisible ? element.height * scale : 0;
+
           return (
             <div
               key={element.id}
@@ -1389,8 +1392,10 @@ class App extends React.Component<AppProps, AppState> {
               )}
               style={{
                 transform: isVisible
-                  ? `translate(${left}px, ${top}px) scale(${scale})`
+                  ? `translate(${left}px, ${top}px)`
                   : "none",
+                width,
+                height,
                 display: isVisible ? "block" : "none",
                 opacity: getRenderOpacity(
                   element,
@@ -1429,8 +1434,8 @@ class App extends React.Component<AppProps, AppState> {
                 }}*/
                 className="excalidraw__embeddable-container__inner excalidraw__richcontent-container__inner"
                 style={{
-                  width: isVisible ? `${element.width}px` : 0,
-                  height: isVisible ? `${element.height}px` : 0,
+                  width,
+                  height,
                   transform: isVisible ? `rotate(${element.angle}rad)` : "none",
                   pointerEvents: isActive
                     ? POINTER_EVENTS.enabled
@@ -1452,6 +1457,11 @@ class App extends React.Component<AppProps, AppState> {
                     element={element}
                     theme={this.state.theme}
                     offset={{ left, top }}
+                    size={{
+                      width: element.width,
+                      height: element.height,
+                      scale,
+                    }}
                     content={this.richContentData}
                     onChange={this.onRichContentChange}
                   />

@@ -15,6 +15,7 @@ export function RichContentEditor(
     element: ExcalidrawRichContentElement;
     theme: Theme;
     offset: { left: number; top: number };
+    size: { width: number; height: number; scale: number };
     content: any;
     onChange: (element: ExcalidrawRichContentElement, content: any) => void;
   }>,
@@ -22,7 +23,7 @@ export function RichContentEditor(
   const container = useRef<HTMLDivElement>(null);
   const editor = useRef<Editor>();
   const { langCode } = useI18n();
-  const { theme, onChange, element } = props;
+  const { theme, onChange, element, size } = props;
 
   useEffect(() => {
     // @ts-ignore
@@ -76,21 +77,26 @@ export function RichContentEditor(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        const w = Math.max(width - 32, 0);
-        const h = Math.max(height - 26, 0);
-        editor.current?.command.executePaperSize(w, h);
-      }
-    });
-    resizeObserver.observe(container.current!);
+  // useEffect(() => {
+  //   const resizeObserver = new ResizeObserver((entries) => {
+  //     for (const entry of entries) {
+  //       const { width, height } = entry.contentRect;
+  //       const w = Math.max(width - 32, 0);
+  //       const h = Math.max(height - 26, 0);
+  //       editor.current?.command.executePageScale(scale);
+  //       editor.current?.command.executePaperSize(w, h);
+  //     }
+  //   });
+  //   resizeObserver.observe(container.current!);
 
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     resizeObserver.disconnect();
+  //   };
+  // }, []);
+  useEffect(() => {
+    editor.current?.command.executePageScale(size.scale);
+    editor.current?.command.executePaperSize(size.width, size.height);
+  }, [size.width, size.height, size.scale]);
 
   useEffect(() => {
     const onContentChange = () => {
