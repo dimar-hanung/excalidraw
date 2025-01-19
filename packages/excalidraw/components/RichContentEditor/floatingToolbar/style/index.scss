@@ -137,5 +137,25 @@
     &.ce-clean i {
       background: url(../icons/format-clear.svg);
     }
+
+    &.ce-align-left i {
+      background: url(../icons/align-left.svg);
+    }
+
+    &.ce-align-right i {
+      background: url(../icons/align-right.svg);
+    }
+
+    &.ce-align-center i {
+      background: url(../icons/align-center.svg);
+    }
+
+    &.ce-align-auto i {
+      background: url(../icons/align-auto.svg);
+    }
+
+    &.ce-align-justify i {
+      background: url(../icons/align-justify.svg);
+    }
   }
 }

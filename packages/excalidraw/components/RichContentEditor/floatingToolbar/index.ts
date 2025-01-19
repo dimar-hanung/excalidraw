@@ -7,6 +7,7 @@ import type { IToolbarRegister } from "./interface";
 import { PLUGIN_PREFIX } from "./constant";
 import { FONT_FAMILY } from "../../../constants";
 import { getFontFamilyString } from "../../../utils";
+import { RowFlex } from "../editor";
 
 function createPickerToolbar(
   container: HTMLDivElement,
@@ -149,6 +150,39 @@ const toolbarRegisterList: IToolbarRegister[] = [
           editor.command.executeFont(font);
         },
       );
+    },
+  },
+  {
+    isDivider: true,
+  },
+  {
+    key: ToolbarType.ALIGN_AUTO,
+    callback(editor) {
+      editor.command.executeRowFlex(RowFlex.ALIGNMENT);
+    },
+  },
+  {
+    key: ToolbarType.ALIGN_LEFT,
+    callback(editor) {
+      editor.command.executeRowFlex(RowFlex.LEFT);
+    },
+  },
+  {
+    key: ToolbarType.ALIGN_RIGHT,
+    callback(editor) {
+      editor.command.executeRowFlex(RowFlex.RIGHT);
+    },
+  },
+  {
+    key: ToolbarType.ALIGN_CENTER,
+    callback(editor) {
+      editor.command.executeRowFlex(RowFlex.CENTER);
+    },
+  },
+  {
+    key: ToolbarType.ALIGN_JUSTIFY,
+    callback(editor) {
+      editor.command.executeRowFlex(RowFlex.JUSTIFY);
     },
   },
   {

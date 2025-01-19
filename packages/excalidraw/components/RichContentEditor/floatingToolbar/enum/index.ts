@@ -9,4 +9,9 @@ export enum ToolbarType {
   COLOR = "color",
   HIGHLIGHT = "highlight",
   CLEAN = "clean",
+  ALIGN_AUTO = "align-auto",
+  ALIGN_LEFT = "align-left",
+  ALIGN_CENTER = "align-center",
+  ALIGN_RIGHT = "align-right",
+  ALIGN_JUSTIFY = "align-justify",
 }
