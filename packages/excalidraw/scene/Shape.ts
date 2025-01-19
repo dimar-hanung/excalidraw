@@ -38,6 +38,10 @@ const getDashArrayDotted = (strokeWidth: number) => [1.5, 6 + strokeWidth];
 function adjustRoughness(element: ExcalidrawElement): number {
   const roughness = element.roughness;
 
+  if (element.type === "richcontent") {
+    return roughness;
+  }
+
   const maxSize = Math.max(element.width, element.height);
   const minSize = Math.min(element.width, element.height);
 

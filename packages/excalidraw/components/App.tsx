@@ -1339,29 +1339,31 @@ class App extends React.Component<AppProps, AppState> {
 
     const richContentElements = this.scene
       .getNonDeletedElements()
-      .filter((el): el is Ordered<NonDeleted<ExcalidrawIframeLikeElement>> =>
+      .filter((el): el is Ordered<NonDeleted<ExcalidrawRichContentElement>> =>
         isRichContentElement(el),
       );
 
     return (
       <>
-        {richContentElements.map((el) => {
+        {richContentElements.map((element) => {
           const { x, y } = sceneCoordsToViewportCoords(
-            { sceneX: el.x, sceneY: el.y },
+            { sceneX: element.x, sceneY: element.y },
             this.state,
           );
+          const left = x - this.state.offsetLeft;
+          const top = y - this.state.offsetTop;
 
           const isVisible = isElementInViewport(
-            el,
+            element,
             normalizedWidth,
             normalizedHeight,
             this.state,
             this.scene.getNonDeletedElementsMap(),
           );
-          const hasBeenInitialized = this.initializedEmbeds.has(el.id);
+          const hasBeenInitialized = this.initializedEmbeds.has(element.id);
 
           if (isVisible && !hasBeenInitialized) {
-            this.initializedEmbeds.add(el.id);
+            this.initializedEmbeds.add(element.id);
           }
           const shouldRender = isVisible || hasBeenInitialized;
 
@@ -1370,15 +1372,15 @@ class App extends React.Component<AppProps, AppState> {
           }
 
           const isActive =
-            this.state.activeRichContent?.element === el &&
+            this.state.activeRichContent?.element === element &&
             this.state.activeRichContent?.state === "active";
           const isHovered =
-            this.state.activeRichContent?.element === el &&
+            this.state.activeRichContent?.element === element &&
             this.state.activeRichContent?.state === "hover";
 
           return (
             <div
-              key={el.id}
+              key={element.id}
               className={clsx(
                 "excalidraw__embeddable-container excalidraw__richcontent-container",
                 {
@@ -1387,14 +1389,15 @@ class App extends React.Component<AppProps, AppState> {
               )}
               style={{
                 transform: isVisible
-                  ? `translate(${x - this.state.offsetLeft}px, ${
-                      y - this.state.offsetTop
-                    }px) scale(${scale})`
+                  ? `translate(${left}px, ${top}px) scale(${scale})`
                   : "none",
                 display: isVisible ? "block" : "none",
                 opacity: getRenderOpacity(
-                  el,
-                  getContainingFrame(el, this.scene.getNonDeletedElementsMap()),
+                  element,
+                  getContainingFrame(
+                    element,
+                    this.scene.getNonDeletedElementsMap(),
+                  ),
                   this.elementsPendingErasure,
                   null,
                   this.state.openDialog?.name === "elementLinkSelector"
@@ -1402,8 +1405,8 @@ class App extends React.Component<AppProps, AppState> {
                     : 1,
                 ),
                 ["--embeddable-radius" as string]: `${getCornerRadius(
-                  Math.min(el.width, el.height),
-                  el,
+                  Math.min(element.width, element.height),
+                  element,
                 )}px`,
               }}
             >
@@ -1426,9 +1429,9 @@ class App extends React.Component<AppProps, AppState> {
                 }}*/
                 className="excalidraw__embeddable-container__inner excalidraw__richcontent-container__inner"
                 style={{
-                  width: isVisible ? `${el.width}px` : 0,
-                  height: isVisible ? `${el.height}px` : 0,
-                  transform: isVisible ? `rotate(${el.angle}rad)` : "none",
+                  width: isVisible ? `${element.width}px` : 0,
+                  height: isVisible ? `${element.height}px` : 0,
+                  transform: isVisible ? `rotate(${element.angle}rad)` : "none",
                   pointerEvents: isActive
                     ? POINTER_EVENTS.enabled
                     : POINTER_EVENTS.disabled,
@@ -1442,10 +1445,16 @@ class App extends React.Component<AppProps, AppState> {
                 <div
                   className="excalidraw__embeddable__outer"
                   style={{
-                    padding: `${el.strokeWidth}px`,
+                    padding: `${element.strokeWidth}px`,
                   }}
                 >
-                  <RichContentEditor theme={this.state.theme} scale={scale} />
+                  <RichContentEditor
+                    element={element}
+                    theme={this.state.theme}
+                    offset={{ left, top }}
+                    content={this.richContentData}
+                    onChange={this.onRichContentChange}
+                  />
                 </div>
               </div>
             </div>
@@ -1454,6 +1463,24 @@ class App extends React.Component<AppProps, AppState> {
       </>
     );
   }
+
+  private richContentData = [];
+
+  /**
+   * 响应数据变更，并将数据存到localStorage中
+   * @param element
+   * @param data
+   */
+  private onRichContentChange = (
+    element: ExcalidrawRichContentElement,
+    data: any,
+  ) => {
+    // @ts-ignore
+    element.data = data;
+    const elements = this.getSceneElements();
+    const { state, files } = this;
+    this.props.onChange?.(elements, state, files);
+  };
 
   private getFrameNameDOMId = (frameElement: ExcalidrawElement) => {
     return `${this.id}-frame-name-${frameElement.id}`;
