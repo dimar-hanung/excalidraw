@@ -72,15 +72,15 @@ export const globalMenus: IRegisterContextMenu[] = [
       const container = command.getContainer();
       // @NOTICE 此处有较大的耦合，不可以通用
       // @ts-ignore
-      const scrollHeight = container.parentNode?.scrollHeight;
+      const height = container.parentNode?.scrollHeight;
       // @ts-ignore
-      const scrollWidth = container.parentNode?.scrollWidth;
+      const width = container.parentNode?.clientWidth;
       // @ts-ignore
       container.parentNode.dispatchEvent(
         new CustomEvent("adjust-size", {
           detail: {
-            width: scrollWidth,
-            height: scrollHeight,
+            width,
+            height,
           },
         }),
       );

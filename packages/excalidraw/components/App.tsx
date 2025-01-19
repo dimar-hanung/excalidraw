@@ -428,7 +428,7 @@ import { AnimationFrameHandler } from "../animation-frame-handler";
 import { AnimatedTrail } from "../animated-trail";
 import { LaserTrails } from "../laser-trails";
 import { withBatchedUpdates, withBatchedUpdatesThrottled } from "../reactUtils";
-import { getRenderOpacity } from "../renderer/renderElement";
+import { drawElementOnCanvas, getRenderOpacity } from "../renderer/renderElement";
 import {
   hitElementBoundText,
   hitElementBoundingBoxOnly,
@@ -1494,14 +1494,35 @@ class App extends React.Component<AppProps, AppState> {
     element: ExcalidrawRichContentElement,
     newSize: { width: number; height: number },
   ) => {
+    // 注意，由于缩放会导致实际得到的width,height是缩放后的结果，因此，要除以缩放比例，以获得原始尺寸
+    const scale = this.state.zoom.value;
     // @ts-ignore
-    element.width = newSize.width;
+    element.width = newSize.width / scale;
     // @ts-ignore
-    element.height = newSize.height;
+    element.height = newSize.height / scale;
+
     const elements = this.getSceneElements();
     const { state, files } = this;
     this.props.onChange?.(elements, state, files);
-    this.forceUpdate();
+
+    // const renderConfig = {
+    //   imageCache: this.imageCache,
+    //   isExporting: false,
+    //   renderGrid: isGridModeEnabled(this),
+    //   canvasBackgroundColor: this.state.viewBackgroundColor,
+    //   embedsValidationStatus: this.embedsValidationStatus,
+    //   elementsPendingErasure: this.elementsPendingErasure,
+    //   pendingFlowchartNodes: this.flowChartCreator.pendingNodes,
+    // };
+
+    setTimeout(() => {
+      this.updateScene({
+        elements: this.scene.getElementsIncludingDeleted(),
+        appState: this.state,
+      });
+      this.forceUpdate();
+      // TODO 调整边框
+    }, 100);
   };
 
   private getFrameNameDOMId = (frameElement: ExcalidrawElement) => {

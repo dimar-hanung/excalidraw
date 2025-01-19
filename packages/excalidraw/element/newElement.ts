@@ -273,7 +273,11 @@ export const newRichContentElement = (
     type: "richcontent";
   } & ElementConstructorOpts,
 ): NonDeleted<ExcalidrawRichContentElement> => {
-  return _newElementBase<ExcalidrawRichContentElement>("richcontent", opts);
+  return {
+    ..._newElementBase<ExcalidrawRichContentElement>("richcontent", opts),
+    roundness: null,
+    roughness: DEFAULT_ELEMENT_PROPS.roughness,
+  };
 };
 
 const getAdjustedDimensions = (

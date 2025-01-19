@@ -384,7 +384,7 @@ const drawImagePlaceholder = (
   );
 };
 
-const drawElementOnCanvas = (
+export const drawElementOnCanvas = (
   element: NonDeletedExcalidrawElement,
   rc: RoughCanvas,
   context: CanvasRenderingContext2D,

@@ -281,6 +281,7 @@ export const isUsingAdaptiveRadius = (type: string) =>
   type === "rectangle" ||
   type === "embeddable" ||
   type === "iframe" ||
+  type === "richcontent" ||
   type === "image";
 
 export const isUsingProportionalRadius = (type: string) =>

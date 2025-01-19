@@ -58,10 +58,11 @@ export function RichContentEditor(
         "imageInsert",
         "imageChange",
         "imageSaveAs",
-        "divider",
-        "globalAutoAdjustSize",
+        // "divider",
+        // 目前无法做到调整边框，先不支持
+        // "globalAutoAdjustSize",
       ],
-      renderMode: RenderMode.COMPATIBILITY,
+      renderMode: RenderMode.SPEED,
     });
 
     editor.current.use(floatingToolbarPlugin);
