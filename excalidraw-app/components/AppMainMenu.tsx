@@ -17,7 +17,7 @@ export const AppMainMenu: React.FC<{
   const { t } = useI18n();
   return (
     <MainMenu>
-      <MainMenu.DefaultItems.Save />
+      {/* <MainMenu.DefaultItems.Save /> */}
       <MainMenu.DefaultItems.ImportExportScene />
       <MainMenu.DefaultItems.SaveAsImage />
       {props.isCollabEnabled && (

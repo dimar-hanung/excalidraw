@@ -252,6 +252,19 @@ export const exportToCanvas = async (
     },
   });
 
+  const richContentElements = elements.filter(
+    (item) => item.type === "richcontent",
+  );
+  richContentElements.forEach((element) => {
+    const { id, width, height, x, y } = element;
+    const richContentCanvas = document.querySelector(
+      `#rich-content-editor-${id} canvas`,
+    )!;
+    const ctx = canvas.getContext("2d");
+    // @ts-ignore
+    ctx?.drawImage(richContentCanvas, x - minX, y - minY, width, height);
+  });
+
   return canvas;
 };
 

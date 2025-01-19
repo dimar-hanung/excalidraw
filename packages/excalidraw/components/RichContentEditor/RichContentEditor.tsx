@@ -9,6 +9,7 @@ import "./RichContentEditor.scss";
 import { FONT_FAMILY } from "../../constants";
 import { getFontFamilyString } from "../../utils";
 import type { ExcalidrawRichContentElement } from "../../element/types";
+import { Fonts } from "../../fonts";
 
 export function RichContentEditor(
   props: PropsWithoutRef<{
@@ -33,9 +34,7 @@ export function RichContentEditor(
     const data: any = element.data || [];
 
     editor.current = new Editor(container.current!, data, {
-      defaultFont: getFontFamilyString({
-        fontFamily: FONT_FAMILY.Excalifont,
-      }),
+      defaultFont: getFontFamilyString({ fontFamily: FONT_FAMILY.Excalifont }),
       cursor: {
         color: theme === THEME.DARK ? "#fff" : "#000",
       },
@@ -110,7 +109,12 @@ export function RichContentEditor(
       const { width, height } = detail;
       onAdjustSize(element, { width, height });
     };
+
     const box = container.current!;
+    if (!box) {
+      return;
+    }
+
     // @ts-ignore
     box.addEventListener("adjust-size", notify);
     return () => {
@@ -128,6 +132,14 @@ export function RichContentEditor(
   useEffect(() => {
     editor.current?.command.executeSetLocale(langCode);
   }, [langCode]);
+
+  useEffect(() => {
+    Fonts.loadAllFonts().finally(() => {
+      setTimeout(() => {
+        editor.current?.command.executeForceUpdate({ isSubmitHistory: false });
+      }, 100);
+    });
+  }, []);
 
   return (
     <div

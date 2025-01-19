@@ -428,7 +428,7 @@ import { AnimationFrameHandler } from "../animation-frame-handler";
 import { AnimatedTrail } from "../animated-trail";
 import { LaserTrails } from "../laser-trails";
 import { withBatchedUpdates, withBatchedUpdatesThrottled } from "../reactUtils";
-import { drawElementOnCanvas, getRenderOpacity } from "../renderer/renderElement";
+import { getRenderOpacity } from "../renderer/renderElement";
 import {
   hitElementBoundText,
   hitElementBoundingBoxOnly,
