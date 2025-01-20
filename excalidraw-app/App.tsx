@@ -21,7 +21,6 @@ import { useCallbackRefState } from "../packages/excalidraw/hooks/useCallbackRef
 import { t } from "../packages/excalidraw/i18n";
 import {
   Excalidraw,
-  LiveCollaborationTrigger,
   StoreAction,
   reconcileElements,
 } from "../packages/excalidraw";
@@ -95,14 +94,12 @@ import { openConfirmModal } from "../packages/excalidraw/components/OverwriteCon
 import { OverwriteConfirmDialog } from "../packages/excalidraw/components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../packages/excalidraw/components/Trans";
 import { ShareDialog, shareDialogStateAtom } from "./share/ShareDialog";
-import CollabError, { collabErrorIndicatorAtom } from "./collab/CollabError";
 import type { RemoteExcalidrawElement } from "../packages/excalidraw/data/reconcile";
 import {
   CommandPalette,
   DEFAULT_CATEGORIES,
 } from "../packages/excalidraw/components/CommandPalette/CommandPalette";
 import { actionToggleTheme } from "../packages/excalidraw/actions";
-import { usersIcon, share } from "../packages/excalidraw/components/icons";
 import { appThemeAtom, useHandleAppTheme } from "./useHandleAppTheme";
 import { getPreferredLanguage } from "./app-language/language-detector";
 import { useAppLangCode } from "./app-language/language-state";
@@ -348,7 +345,6 @@ const ExcalidrawWrapper = () => {
   const [isCollaborating] = useAtomWithInitialValue(isCollaboratingAtom, () => {
     return isCollaborationLink(window.location.href);
   });
-  const collabError = useAtomValue(collabErrorIndicatorAtom);
 
   useHandleLibrary({
     excalidrawAPI,
@@ -387,21 +383,6 @@ const ExcalidrawWrapper = () => {
         return;
       }
       if (collabAPI?.isCollaborating()) {
-        if (data.scene.elements) {
-          collabAPI
-            .fetchImageFilesFromFirebase({
-              elements: data.scene.elements,
-              forceFetchFiles: true,
-            })
-            .then(({ loadedFiles, erroredFiles }) => {
-              excalidrawAPI.addFiles(loadedFiles);
-              updateStaleImageStatuses({
-                excalidrawAPI,
-                erroredFiles,
-                elements: excalidrawAPI.getSceneElementsIncludingDeleted(),
-              });
-            });
-        }
       } else {
         const fileIds =
           data.scene.elements?.reduce((acc, element) => {
@@ -756,22 +737,6 @@ const ExcalidrawWrapper = () => {
         handleKeyboardGlobally={true}
         autoFocus={true}
         theme={editorTheme}
-        renderTopRightUI={(isMobile) => {
-          if (isMobile || !collabAPI || isCollabDisabled) {
-            return null;
-          }
-          return (
-            <div className="top-right-ui">
-              {collabError.message && <CollabError collabError={collabError} />}
-              <LiveCollaborationTrigger
-                isCollaborating={isCollaborating}
-                onSelect={() =>
-                  setShareDialogState({ isOpen: true, type: "share" })
-                }
-              />
-            </div>
-          );
-        }}
         onLinkOpen={(element, event) => {
           if (element.link && isElementLink(element.link)) {
             event.preventDefault();
@@ -838,25 +803,25 @@ const ExcalidrawWrapper = () => {
 
         <CommandPalette
           customCommandPaletteItems={[
-            {
-              label: t("labels.liveCollaboration"),
-              category: DEFAULT_CATEGORIES.app,
-              keywords: [
-                "team",
-                "multiplayer",
-                "share",
-                "public",
-                "session",
-                "invite",
-              ],
-              icon: usersIcon,
-              perform: () => {
-                setShareDialogState({
-                  isOpen: true,
-                  type: "collaborationOnly",
-                });
-              },
-            },
+            // {
+            //   label: t("labels.liveCollaboration"),
+            //   category: DEFAULT_CATEGORIES.app,
+            //   keywords: [
+            //     "team",
+            //     "multiplayer",
+            //     "share",
+            //     "public",
+            //     "session",
+            //     "invite",
+            //   ],
+            //   icon: usersIcon,
+            //   perform: () => {
+            //     setShareDialogState({
+            //       isOpen: true,
+            //       type: "collaborationOnly",
+            //     });
+            //   },
+            // },
             {
               label: t("roomDialog.button_stopSession"),
               category: DEFAULT_CATEGORIES.app,
@@ -879,26 +844,26 @@ const ExcalidrawWrapper = () => {
                 }
               },
             },
-            {
-              label: t("labels.share"),
-              category: DEFAULT_CATEGORIES.app,
-              predicate: true,
-              icon: share,
-              keywords: [
-                "link",
-                "shareable",
-                "readonly",
-                "export",
-                "publish",
-                "snapshot",
-                "url",
-                "collaborate",
-                "invite",
-              ],
-              perform: async () => {
-                setShareDialogState({ isOpen: true, type: "share" });
-              },
-            },
+            // {
+            //   label: t("labels.share"),
+            //   category: DEFAULT_CATEGORIES.app,
+            //   predicate: true,
+            //   icon: share,
+            //   keywords: [
+            //     "link",
+            //     "shareable",
+            //     "readonly",
+            //     "export",
+            //     "publish",
+            //     "snapshot",
+            //     "url",
+            //     "collaborate",
+            //     "invite",
+            //   ],
+            //   perform: async () => {
+            //     setShareDialogState({ isOpen: true, type: "share" });
+            //   },
+            // },
             {
               ...actionToggleTheme,
               category: "App",

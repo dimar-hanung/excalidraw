@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { copyTextToSystemClipboard } from "../../packages/excalidraw/clipboard";
 import { trackEvent } from "../../packages/excalidraw/analytics";
-import { getFrame } from "../../packages/excalidraw/utils";
 import { useI18n } from "../../packages/excalidraw/i18n";
 import { KEYS } from "../../packages/excalidraw/keys";
 import { Dialog } from "../../packages/excalidraw/components/Dialog";
 import {
   copyIcon,
   LinkIcon,
-  playerPlayIcon,
   playerStopFilledIcon,
   share,
   shareIOS,
@@ -178,42 +176,42 @@ const ActiveRoomDialog = ({
 const ShareDialogPicker = (props: ShareDialogProps) => {
   const { t } = useI18n();
 
-  const { collabAPI } = props;
+  // const { collabAPI } = props;
 
-  const startCollabJSX = collabAPI ? (
-    <>
-      <div className="ShareDialog__picker__header">
-        {t("labels.liveCollaboration").replace(/\./g, "")}
-      </div>
+  // const startCollabJSX = collabAPI && ? (
+  //   <>
+  //     <div className="ShareDialog__picker__header">
+  //       {t("labels.liveCollaboration").replace(/\./g, "")}
+  //     </div>
 
-      <div className="ShareDialog__picker__description">
-        <div style={{ marginBottom: "1em" }}>{t("roomDialog.desc_intro")}</div>
-        {t("roomDialog.desc_privacy")}
-      </div>
+  //     <div className="ShareDialog__picker__description">
+  //       <div style={{ marginBottom: "1em" }}>{t("roomDialog.desc_intro")}</div>
+  //       {t("roomDialog.desc_privacy")}
+  //     </div>
 
-      <div className="ShareDialog__picker__button">
-        <FilledButton
-          size="large"
-          label={t("roomDialog.button_startSession")}
-          icon={playerPlayIcon}
-          onClick={() => {
-            trackEvent("share", "room creation", `ui (${getFrame()})`);
-            collabAPI.startCollaboration(null);
-          }}
-        />
-      </div>
+  //     <div className="ShareDialog__picker__button">
+  //       <FilledButton
+  //         size="large"
+  //         label={t("roomDialog.button_startSession")}
+  //         icon={playerPlayIcon}
+  //         onClick={() => {
+  //           trackEvent("share", "room creation", `ui (${getFrame()})`);
+  //           collabAPI.startCollaboration(null);
+  //         }}
+  //       />
+  //     </div>
 
-      {props.type === "share" && (
-        <div className="ShareDialog__separator">
-          <span>{t("shareDialog.or")}</span>
-        </div>
-      )}
-    </>
-  ) : null;
+  //     {props.type === "share" && (
+  //       <div className="ShareDialog__separator">
+  //         <span>{t("shareDialog.or")}</span>
+  //       </div>
+  //     )}
+  //   </>
+  // ) : null;
 
   return (
     <>
-      {startCollabJSX}
+      {/* {startCollabJSX} */}
 
       {props.type === "share" && (
         <>

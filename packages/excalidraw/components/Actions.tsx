@@ -46,7 +46,6 @@ import {
   frameToolIcon,
   mermaidLogoIcon,
   laserPointerToolIcon,
-  TextIcon,
 } from "./icons";
 import { KEYS } from "../keys";
 import { CLASSES } from "../constants";
@@ -362,14 +361,6 @@ export const ShapesSwitcher = ({
             selected={frameToolSelected}
           >
             {t("toolBar.frame")}
-          </DropdownMenu.Item>
-          <DropdownMenu.Item
-            onSelect={() => app.setActiveTool({ type: "richcontent" })}
-            icon={TextIcon}
-            data-testid="toolbar-richcontent"
-            selected={richContentToolSelected}
-          >
-            {t("toolBar.richContent")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             onSelect={() => app.setActiveTool({ type: "embeddable" })}

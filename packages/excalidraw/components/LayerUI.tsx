@@ -64,6 +64,8 @@ import ElementLinkDialog from "./ElementLinkDialog";
 
 import "./LayerUI.scss";
 import "./Toolbar.scss";
+import { RichContentButton } from "./RichContentButton";
+import { AIButton } from "./AIButton";
 
 interface LayerUIProps {
   actionManager: ActionManager;
@@ -275,8 +277,6 @@ const LayerUI = ({
                               isMobile
                             />
 
-                            <div className="App-toolbar__divider" />
-
                             <PenModeButton
                               zenModeEnabled={appState.zenModeEnabled}
                               checked={appState.penMode}
@@ -290,11 +290,30 @@ const LayerUI = ({
                               title={t("toolBar.lock")}
                             />
 
+                            <div className="App-toolbar__divider" />
+
+                            <RichContentButton
+                              checked={
+                                appState.activeTool.type === "richcontent"
+                              }
+                              onChange={() =>
+                                app.setActiveTool({ type: "richcontent" })
+                              }
+                              title={t("toolBar.richContent")}
+                              isMobile
+                            />
+
                             <ShapesSwitcher
                               appState={appState}
                               activeTool={appState.activeTool}
                               UIOptions={UIOptions}
                               app={app}
+                            />
+
+                            <AIButton
+                              onClick={() => console.debug('AI')}
+                              title={t("toolBar.ai")}
+                              isMobile
                             />
                           </Stack.Row>
                         </Island>

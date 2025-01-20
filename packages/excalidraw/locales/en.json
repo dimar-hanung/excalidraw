@@ -178,7 +178,7 @@
   },
   "library": {
     "noItems": "No items added yet...",
-    "hint_emptyLibrary": "Select an item on canvas to add it here, or install a library from the public repository, below.",
+    "hint_emptyLibrary": "Select an item on canvas to add it here.",
     "hint_emptyPrivateLibrary": "Select an item on canvas to add it here."
   },
   "search": {
@@ -301,7 +301,8 @@
     "hand": "Hand (panning tool)",
     "extraTools": "More tools",
     "mermaidToExcalidraw": "Mermaid to Excalidraw",
-    "richContent": "Rich Content"
+    "richContent": "Rich Content",
+    "ai": "AI"
   },
   "element": {
     "rectangle": "Rectangle",

@@ -73,16 +73,16 @@ export const languages: Language[] = [
 ];
 
 const TEST_LANG_CODE = "__test__";
-if (import.meta.env.DEV) {
-  languages.unshift(
-    { code: TEST_LANG_CODE, label: "test language" },
-    {
-      code: `${TEST_LANG_CODE}.rtl`,
-      label: "\u{202a}test language (rtl)\u{202c}",
-      rtl: true,
-    },
-  );
-}
+// if (import.meta.env.DEV) {
+//   languages.unshift(
+//     { code: TEST_LANG_CODE, label: "test language" },
+//     {
+//       code: `${TEST_LANG_CODE}.rtl`,
+//       label: "\u{202a}test language (rtl)\u{202c}",
+//       rtl: true,
+//     },
+//   );
+// }
 
 let currentLang: Language = defaultLang;
 let currentLangData = {};
