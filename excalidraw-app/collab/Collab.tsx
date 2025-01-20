@@ -58,7 +58,7 @@ import type {
   ReconciledExcalidrawElement,
   RemoteExcalidrawElement,
 } from "../../packages/excalidraw/data/reconcile";
-import { CollaborationEvents } from "../../packages/excalidraw/events/collaboration";
+import { CollaborationEvents } from "../../packages/excalidraw/events/collaboration-events";
 
 export const collabAPIAtom = atom<CollabAPI | null>(null);
 export const isCollaboratingAtom = atom(false);

@@ -471,6 +471,7 @@ import { wrapText } from "../element/textWrapping";
 import { actionCopyElementLink } from "../actions/actionElementLink";
 import { isElementLink, parseElementLinkFromURL } from "../element/elementLink";
 import { RichContentEditor } from "./RichContentEditor";
+import { AISidebar } from "./AISidebar/AISidebar";
 
 const AppContext = React.createContext<AppClassProperties>(null!);
 const AppPropsContext = React.createContext<AppProps>(null!);
@@ -698,6 +699,9 @@ class App extends React.Component<AppProps, AppState> {
       name,
       width: window.innerWidth,
       height: window.innerHeight,
+      ai: {
+        enabled: false,
+      },
     };
 
     this.id = nanoid();
@@ -1815,6 +1819,7 @@ class App extends React.Component<AppProps, AppState> {
                           onLockToggle={this.toggleLock}
                           onPenModeToggle={this.togglePenMode}
                           onHandToolToggle={this.onHandToolToggle}
+                          onToggleAI={this.onToggleAI}
                           langCode={getLanguage().code}
                           renderTopRightUI={renderTopRightUI}
                           renderCustomStats={renderCustomStats}
@@ -1822,7 +1827,10 @@ class App extends React.Component<AppProps, AppState> {
                             typeof this.props?.zenModeEnabled === "undefined" &&
                             this.state.zenModeEnabled
                           }
-                          UIOptions={this.props.UIOptions}
+                          UIOptions={{
+                            ...this.props.UIOptions,
+                            dockedSidebarBreakpoint: 0,
+                          }}
                           onExportImage={this.onExportImage}
                           renderWelcomeScreen={
                             !this.state.isLoading &&
@@ -2038,6 +2046,7 @@ class App extends React.Component<AppProps, AppState> {
                       </ExcalidrawActionManagerContext.Provider>
                       {this.renderEmbeddables()}
                       {this.renderRichContents()}
+                      <AISidebar docked={this.state.ai.enabled} onDock={() => this.onToggleAI(false)} />
                     </ExcalidrawElementsContext.Provider>
                   </ExcalidrawAppStateContext.Provider>
                 </ExcalidrawSetAppStateContext.Provider>
@@ -2066,6 +2075,15 @@ class App extends React.Component<AppProps, AppState> {
       elements,
       position: "center",
       files: null,
+    });
+  };
+
+  public onToggleAI = (forceClose?: boolean) => {
+    this.setState({
+      ai: {
+        ...this.state.ai,
+        enabled: forceClose ? false : !this.state.ai.enabled,
+      },
     });
   };
 

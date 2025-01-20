@@ -1,7 +1,7 @@
 import { Editor, PageMode, RenderMode } from "./editor";
 import floatingToolbarPlugin from "./floatingToolbar";
 import type { PropsWithoutRef } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { THEME } from "../../constants";
 import { useI18n } from "../../i18n";
 import type { Theme } from "../../element/types";
@@ -10,7 +10,6 @@ import { FONT_FAMILY } from "../../constants";
 import { getFontFamilyString } from "../../utils";
 import type { ExcalidrawRichContentElement } from "../../element/types";
 import { Fonts } from "../../fonts";
-import { CollaborationEvents } from "../../events/collaboration";
 
 export function RichContentEditor(
   props: PropsWithoutRef<{
@@ -29,7 +28,6 @@ export function RichContentEditor(
   const editor = useRef<Editor>();
   const { langCode } = useI18n();
   const { theme, onChange, onAdjustSize, element, size } = props;
-  const [, forceUpdate] = useState({});
 
   useEffect(() => {
     // @ts-ignore
@@ -145,29 +143,6 @@ export function RichContentEditor(
       }, 100);
     });
   }, []);
-
-  useEffect(() => {
-    const onRemoteUpate = (elements: ExcalidrawRichContentElement[]) => {
-      if (!editor.current) {
-        return;
-      }
-      const newElement = elements.find((item) => item.id === element.id);
-      if (!newElement) {
-        return;
-      }
-      forceUpdate({});
-      console.debug('setValue:', element);
-      // @ts-ignore
-      if (!element.data) {
-        return;
-      }
-      // @ts-ignore
-      editor.current?.command.executeSetValue(element.data);
-      editor.current?.command.executeForceUpdate();
-    };
-    CollaborationEvents.on("update", onRemoteUpate);
-    return () => CollaborationEvents.off("update", onRemoteUpate);
-  }, [element]);
 
   return (
     <div

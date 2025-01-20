@@ -414,6 +414,10 @@ export interface AppState {
   croppingElementId: ExcalidrawElement["id"] | null;
 
   searchMatches: readonly SearchMatch[];
+
+  ai: {
+    enabled: boolean;
+  };
 }
 
 type SearchMatch = {
@@ -668,6 +672,7 @@ export type AppClassProperties = {
   id: App["id"];
   onInsertElements: App["onInsertElements"];
   onExportImage: App["onExportImage"];
+  onToggleAI: App["onToggleAI"];
   lastViewportPosition: App["lastViewportPosition"];
   scrollToContent: App["scrollToContent"];
   addFiles: App["addFiles"];

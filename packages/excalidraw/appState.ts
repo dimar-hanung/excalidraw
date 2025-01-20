@@ -121,6 +121,9 @@ export const getDefaultAppState = (): Omit<
     isCropping: false,
     croppingElementId: null,
     searchMatches: [],
+    ai: {
+      enabled: false,
+    },
   };
 };
 
@@ -246,6 +249,7 @@ const APP_STATE_STORAGE_CONF = (<
   isCropping: { browser: false, export: false, server: false },
   croppingElementId: { browser: false, export: false, server: false },
   searchMatches: { browser: false, export: false, server: false },
+  ai: { browser: false, export: false, server: false },
 });
 
 const _clearAppStateForStorage = <

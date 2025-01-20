@@ -83,6 +83,7 @@ interface LayerUIProps {
   renderCustomStats?: ExcalidrawProps["renderCustomStats"];
   UIOptions: AppProps["UIOptions"];
   onExportImage: AppClassProperties["onExportImage"];
+  onToggleAI: AppClassProperties["onToggleAI"];
   renderWelcomeScreen: boolean;
   children?: React.ReactNode;
   app: AppClassProperties;
@@ -135,6 +136,7 @@ const LayerUI = ({
   renderCustomStats,
   UIOptions,
   onExportImage,
+  onToggleAI,
   renderWelcomeScreen,
   children,
   app,
@@ -310,11 +312,11 @@ const LayerUI = ({
                               app={app}
                             />
 
-                            <AIButton
-                              onClick={() => console.debug('AI')}
+                            {/* <AIButton
+                              onClick={onToggleAI}
                               title={t("toolBar.ai")}
                               isMobile
-                            />
+                            /> */}
                           </Stack.Row>
                         </Island>
                         {isCollaborating && (
