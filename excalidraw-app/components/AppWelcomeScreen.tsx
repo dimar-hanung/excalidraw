@@ -29,12 +29,6 @@ export const AppWelcomeScreen: React.FC<{
               onSelect={() => props.onCollabDialogOpen()}
             />
           )} */}
-          <WelcomeScreen.Center.MenuItem
-            icon={UnlockedIcon}
-            onSelect={() => null}
-          >
-            <span>{t("labels.startNow")}</span>
-          </WelcomeScreen.Center.MenuItem>
         </WelcomeScreen.Center.Menu>
       </WelcomeScreen.Center>
     </WelcomeScreen>

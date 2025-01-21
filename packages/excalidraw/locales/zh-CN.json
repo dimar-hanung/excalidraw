@@ -172,8 +172,7 @@
     "mermaidToExcalidraw": "Mermaid 至 Excalidraw",
     "more": "更多",
     "generate": "生成",
-    "signup": "登录",
-    "startNow": "立即开始创作"
+    "signup": "登录"
   },
   "elementLink": {
     "title": "链接到对象",

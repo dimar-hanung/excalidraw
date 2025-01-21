@@ -50,6 +50,7 @@ export function RichContentEditor(
       background: { color: "transparent" },
       defaultSize: 18,
       defaultBasicRowMarginHeight: 8,
+      defaultRowMargin: 1,
       defaultTabWidth: 32,
       scrollContainerSelector: container.current?.id,
       zone: { tipDisabled: true },
