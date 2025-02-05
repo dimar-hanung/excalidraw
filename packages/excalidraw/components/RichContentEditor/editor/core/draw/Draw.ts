@@ -1254,7 +1254,7 @@ export class Draw {
     this.ctxList.push(ctx);
   }
 
-  private _initPageContext(ctx: CanvasRenderingContext2D) {
+  private _initPageContext(ctx: any) {
     const dpr = this.getPagePixelRatio();
     ctx.scale(dpr, dpr);
     // 重置以下属性是因部分浏览器(chrome)会应用css样式
